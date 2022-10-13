@@ -82,7 +82,7 @@ class bot():
                 Message=Message[1]
                 Message=Message.split(" ")
                 if Message[0]=="!Hello":
-                    self.send_message(self.channel, "Hello")
+                    self.send_message(self.channel, "Hello there")
                 if Message[0]=="!Help":
                     self.send_message(self.channel, "Hello, I am "+self.nickname+" !"
                                       +"I can take the following commands:"
@@ -92,7 +92,12 @@ class bot():
                 if Message[0]=="!Slap":
                     self.send_message(self.channel, "slap")
                 else:
-                    self.send_message(self.channel, "I don't know this command")
+                    self.send_message(self.channel, "I don't understand this command")
+                    
+                if self.nickname in Message:
+                    print("I was mentioned")
+                    receiver=Message[0].split("!")
+                    bot_replies.random_replies(receiver)
             
             
                         #if data contains PING send PONG to server and print pinged to console
