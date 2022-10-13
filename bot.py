@@ -139,7 +139,9 @@ if __name__=="__main__":
     channel="#Test"
     name="bot_peter"
     nickname="ruthlessbot"
-    bot=bot(server, channel, name, nickname)
     print("#"*50)
-    bot.main(server)           
+    bot=bot(server, channel, name, nickname)
+    bot.main()
+    
+               
     
