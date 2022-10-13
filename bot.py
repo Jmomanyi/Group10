@@ -72,25 +72,29 @@ class bot():
     def main(self):
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
-            data=self.sock.recv(1024)
-            data=data.decode("UTF-8")
-            data=data.strip('\n\r') 
-            if("PRIVMSG" in data):
-                Split_message=data.split(":")
-                msg=Split_message[2]
-                if(msg.__contains__("!")):
-                 message=msg[1] 
-                 message=message.split(" ")[0] 
-                 commands.command_library(message)
-                 if self.name in msg[1]:
-                        print("message from "+msg[0]+" : "+msg[1])
-                        
-                        to_who=str(msg[1].split("!")[0])
-                        random_facts(to_who,"facts.txt")
+            Message=self.sock.recv(2048)
+            Message=Message.decode("UTF-8")
+            Message=Message.strip("\r\n")
+            
+            if "PRIVMSG" in Message:
+                Message=Message.split("PRIVMSG")
+                Message=Message[1].split(":")
+                Message=Message[1]
+                Message=Message.split(" ")
+                if Message[0]=="!Hello":
+                    self.send_message(self.channel, "Hello")
+                if Message[0]=="!Help":
+                    self.send_message(self.channel, "Hello, I am "+self.nickname+" !"
+                                      +"I can take the following commands:"
+                                      +"!Help"
+                                      +"!Hello"
+                                      +"!Slap")
+                if Message[0]=="!Slap":
+                    self.send_message(self.channel, "slap")
                 else:
-                    if data.find("PING") !=-1:
-                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
-                     print("pinged")
+                    self.send_message(self.channel, "I don't know this command")
+            
+            
                         #if data contains PING send PONG to server and print pinged to console
                    
                         
