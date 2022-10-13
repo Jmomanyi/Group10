@@ -88,8 +88,12 @@ class bot():
                         to_who=str(msg[1].split("!")[0])
                         random_facts(to_who,"facts.txt")
                 else:
-                    data.find("PING") !=-1
-                    bot_replies.ping(data)       
+                    if data.find("PING") !=-1:
+                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+                     print("pinged")
+                        #if data contains PING send PONG to server and print pinged to console
+                   
+                        
   #class to handle bot replies                      
 class bot_replies():
     def _init_(self,server,channel):
@@ -137,5 +141,5 @@ if __name__=="__main__":
     nickname="ruthlessbot"
     bot=bot(server, channel, name, nickname)
     print("#"*50)
-    bot.main()           
+    bot.main(server)           
     

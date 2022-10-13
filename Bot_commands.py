@@ -1,7 +1,7 @@
 #!/bin/python3
 import bot as Bot
 import socket as s
-import random as rand
+
 
 #class to handle bot commands
 class commands():
