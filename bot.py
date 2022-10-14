@@ -1,6 +1,7 @@
 #!/bin/python3
 
 # imports
+from collections import UserList
 from email import message
 import Bot_commands as commands
 import socket as s
@@ -18,6 +19,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
+        user_list=[]
         self.connect_to_server()
         self.join_channel(self.channel)
         #conect to server
@@ -72,36 +74,38 @@ class bot():
     def main(self):
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
+            user_list=[self.name]
             Message=self.sock.recv(2048)
             Message=Message.decode("UTF-8")
             Message=Message.strip("\r\n")
             
-            if "PRIVMSG" in Message:
-                Message=Message.split("PRIVMSG")
-                Message=Message[1].split(":")
-                Message=Message[1]
-                Message=Message.split(" ")
-                if Message[0]=="!Hello":
-                    self.send_message(self.channel, "Hello there")
-                if Message[0]=="!Help":
-                    self.send_message(self.channel, "Hello, I am "+self.nickname+" !"
-                                      +"I can take the following commands:"
-                                      +"!Help"
-                                      +"!Hello"
-                                      +"!Slap")
-                if Message[0]=="!Slap":
-                    self.send_message(self.channel, "slap")
-                else:
-                    self.send_message(self.channel, "I don't understand this command")
-                    
-                if self.nickname in Message:
-                    print("I was mentioned")
-                    receiver=Message[0].split("!")
-                    bot_replies.random_replies(receiver)
-            
-            
-                        #if data contains PING send PONG to server and print pinged to console
-                   
+            if Message.find("PRIVMSG"+channel) != -1:
+                usr=Message.split("!",1)[0][1:]
+                bot.send_message(channel, f"Hello {usr}")
+                if usr in user_list: user_list.remove(usr)
+                print("#"*50)    
+                print("users in channel")
+                #print users in channel
+                print(user_list)
+                print("#"*50)
+               #keeps the connection alive 
+            if Message.find("PING") != -1:
+                self.sock.send(bytes("PONG "+Message.split()[1]+"\r\n", "UTF-8"))
+                print("connected")
+                #send message to channel
+            if Message.find("!Hello"+channel):
+                usr=Message.split("!",1)[0][1:]
+                bot.send_message(channel, f"Hello {usr}")
+                print("bot sent message to user")
+                #randomly slap a user       
+            if Message.find("!slap"+channel):
+                bot_replies.random_replies(usr)
+                print("bot sent random reply to channel")  
+                
+            if Message.find("PRIVMSG"+self.name) != -1:
+                usr=Message.split("!",1)[0][1:]
+                bot_replies.random_facts(usr,"facts.txt")
+                print("bot sent message to user")
                         
   #class to handle bot replies                      
 class bot_replies():
