@@ -82,7 +82,9 @@ class bot():
           
           
           print(f"source: {source} content: {content}")
-          self.sock.send(bytes("PRIVMSG "+source+" :"+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
+          msg=rand.choice(list(open("facts.txt")))
+          print(msg)
+          self.sock.send(bytes("PRIVMSG "+source+" :"+msg+"\r\n", "UTF-8"))
           
         
             
