@@ -14,7 +14,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
-        self.user_list=[]
+        self.user_list=[self.name]
         self.connect_to_server()#call connnect to server method
         self.join_channel(self.channel)#call the join channel method
         
@@ -47,7 +47,7 @@ class bot():
         
     def message_handler(self,):
         #the bot is the only one in the channel at start
-        self.user_list=[]
+        
         #read messages from server and decode
         data=self.sock.recv(1024).decode("UTF-8")
        
