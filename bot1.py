@@ -107,10 +107,10 @@ if __name__=="__main__":
  channel="#Test"
  name="bot_peter"
  nickname="ruthlessbot"
- 
+ bot=bot(server,channel,name,nickname)
  while True:
    print("#"*50)
-   bot=bot(server,channel,name,nickname)
+   
    bot.message_handler()
  
  
