@@ -60,8 +60,10 @@ class bot():
          usr=data.split()
          usr=usr[0].strip(":")
          self.user_list.append(usr)
-         #print(self.user_list)
-         print (f"{usr} is in channel")
+         print("LIST OF USERS ")
+         print(self.user_list)
+         print("*"*50)
+         
          
          
          #if the message is a user leaving the channel, remove them from the user list
@@ -69,7 +71,9 @@ class bot():
             user=data.split()
             user=user[0].strip(":")
             self.user_list.remove(user)
+            print("LIST OF USERS ")
             print(self.user_list)
+            print("*"*50)
             print(f"{user} has left the channel")
         
          #if the message is a private message find the name of the user and reply.
@@ -86,9 +90,7 @@ class bot():
           print(msg)
           self.sock.send(bytes("PRIVMSG "+source+" :"+msg+"\r\n", "UTF-8"))
           
-          print("LIST OF USERS ")
-          print(self.user_list)
-          print("*"*50)
+         
         
             
                             
