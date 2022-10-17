@@ -47,7 +47,7 @@ class bot():
         self.user_list=[name]
         data=self.sock.recv(1024).decode("UTF-8")
         print("LIST OF USERS ")
-        print(data)
+        print(self.user_list)
         print("*"*50)
         if data.find("PING")!=-1:
           self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
