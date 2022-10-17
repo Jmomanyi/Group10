@@ -42,7 +42,7 @@ class bot():
                 print("Error: "+str(e)+"unable to join channel")
                 s.close()
         
-    def message_handler(self, message):
+    def message_handler(self,):
         while 1:
             message=self.sock.recv(2048).decode("UTF-8")
             message=message.strip('rn')
@@ -112,6 +112,8 @@ if __name__=="__main__":
  nickname="ruthlessbot"
  print("#"*50)
  bot=bot(server,channel,name,nickname)
+ 
+ bot.message_handler
  
  
  
