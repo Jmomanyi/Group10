@@ -11,7 +11,7 @@ class bot():
         self.name=name
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
-        
+        self.host_ip=s.gethostbyname(s.gethostname())
         self.connect_to_server()
         self.join_channel(self.channel)
         
