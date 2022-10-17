@@ -88,23 +88,18 @@ class bot():
                 #print users in channel
                 print(user_list)
                 print("#"*50)
-               #keeps the connection alive 
-            if Message.find("PING") != -1:
-                self.sock.send(bytes("PONG "+Message.split()[1]+"\r\n", "UTF-8"))
-                print("connected")
-                #send message to channel
-            if Message.find("!Hello"+channel):
-                usr=Message.split("!",1)[0][1:]
-                bot.send_message(channel, f"Hello {usr}")
-                print("bot said hello")
-                #randomly slap a user       
-            if Message.find("!slap"+channel):
-                bot_replies.random_replies()
-                print("bot sent random reply to channel")  
+               #keeps the connection alive
+            if Message.find("PING :") != -1:
+                self.sock.send(bytes("PONG :pingis\r\n", "UTF-8"))
+                print("pinged")
+                print("#"*50)
+               
+           
                 
             if Message.find("PRIVMSG"+self.name) != -1:
                 usr=Message.split("!",1)[0][1:]
-                random_facts('facts.txt')
+                print (usr)
+                random_facts(usr,'facts.txt')
                 print("bot sent message to user")
                         
   #class to handle bot replies                      
