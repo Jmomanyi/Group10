@@ -12,6 +12,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
+        self.user_list=[]
         self.connect_to_server()
         self.join_channel(self.channel)
         
@@ -43,16 +44,23 @@ class bot():
                 s.close()
         
     def message_handler(self,):
-        
+        self.user_list=[name]
         data=self.sock.recv(1024).decode("UTF-8")
         print("LIST OF USERS ")
         print(data)
         print("*"*50)
         if data.find("PING")!=-1:
           self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+          
         if data.find("PRIVMSG")!=-1:
-          message=data.split("PRIVMSG",1)[1].split(":",1)[1]
-      
+          message=data.split()
+          source =message[0].strip(":")
+          content=' '.join(message[3:]).strip(":")
+          self.user_list.append(source)
+          print(self.userlist)
+          print(f"source: {source} content: {content}")
+          bot_replies.privatemsg(source)
+          
         if message.startswith("!help"):
               commands.commands.help()
             
@@ -68,11 +76,14 @@ class bot_replies():
      self.channel=channel
      self.name=name
      self.nickname=nickname
-    def private_message(self,username,message):
-        self.sock.send(bytes("PRIVMSG "+username+" :"+message+"rn", "UTF-8"))
+     self.socket=s.socket(s.AF_INET, s.SOCK_STREAM)
+    def privatemsg(self,usr):
+         self.socket.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
         
     def send_message(self,message):
-        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+message+"rn", "UTF-8"))    
+        self.socket.send(bytes("PRIVMSG "+self.channel+" :"+message+"rn", "UTF-8"))  
+        
+          
             
 class channels():    
     def __init__(self,channel):
@@ -81,8 +92,9 @@ class channels():
         
         
     def add_user(self,usr): 
-        user_list=[name]
-        user_list(list(set(usr)))
+        self.user_list=[name]
+        self.user_list.append(usr)
+        print(self.user_list)
     def remove_user(self, usr):       
         if usr in self.user_list:
             self.user_list.remove(usr)
@@ -92,10 +104,11 @@ if __name__=="__main__":
  channel="#Test"
  name="bot_peter"
  nickname="ruthlessbot"
- print("#"*50)
- bot=bot(server,channel,name,nickname)
+ 
  while True:
-  bot.message_handler
+   print("#"*50)
+   bot=bot(server,channel,name,nickname)
+   bot.message_handler()
  
  
  
