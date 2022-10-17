@@ -83,11 +83,11 @@ class bot():
          #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
           
           
-          print(f"source: {source} content: {content}")
+          #print(f"source: {source} content: {content}")
           msg=rand.choice(list(open("facts.txt")))
           print(msg)
         
-          bot_replies.send_message(msg,source)
+          bot_replies.send_message(self.channel,msg)
           
         
             
@@ -106,13 +106,13 @@ class bot_replies():
      self.socket=s.socket(s.AF_INET, s.SOCK_STREAM)
     
         
-    def send_message(self,message,destination):
+    def send_message(self,channel,message):
         #if destination and message are empty print error 
-        if destination!="" and message!="":
+        if channel!="" and message!="":
            
-            self.socket.send(bytes("PRIVMSG "+destination+" :"+message+"\r\n", "UTF-8"))
+            self.socket.send(bytes("PRIVMSG "+channel+" :"+message+"\r\n", "UTF-8"))
         else:
-            print("Error: destination or message is empty")
+            print("Error: channel or message is empty")
           
 
 if __name__=="__main__":
