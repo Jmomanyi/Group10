@@ -2,6 +2,7 @@
 
 # imports
 
+from email import message
 import Bot_commands as commands
 import socket as s
 import sys
@@ -78,12 +79,37 @@ class bot():
                 s.close()        
          
 
-    def comms(message):
-        if message.find("JOIN"+channel) != -1:
-            usr=message.split("!",1)[0][1:]
-            
+    def main(self):
         
-    
+        #while loop to handle connection, sending of messages and receiving of messages
+        while True:
+            
+            
+            #try receiving messages from server if failed print error and close socket
+            try:
+                data=self.sock.recv(1024).decode("UTF-8")
+                print("LIST OF USERS ")
+                print(self.user_list)
+                print("*"*50)
+                if data.find("PING")!=-1:
+                    self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+                if data.find("PRIVMSG")!=-1:
+                    message=data.split("PRIVMSG",1)[1].split(":",1)[1]
+                    if message.startswith("!"):
+                        if message.startswith("!hello"):
+                            self.send_message(channel, "Hello")
+                        elif message.startswith("!help"):
+                            self.send_message(channel, "Commands: !hello, !help, !roll, !quit")
+                        elif message.startswith("!roll"):
+                            self.send_message(channel, str(rand.randint(1,6)))
+                            
+                        elif message.find("PRIVMSG"+self.name) != -1:
+                          print("received a private message")
+                   
+            except s.error as e:
+                print("Error: "+str(e)+"unable to receive message")
+                s.close()
+                sys.exit() 
                 
                 
                 

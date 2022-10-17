@@ -44,18 +44,19 @@ class bot():
         
     def message_handler(self,):
         
-            message=self.sock.recv(2048).decode("UTF-8")
-            message=message.strip('rn')
-            print(message)
-            if message.find("PING")!=-1:
-                self.sock.send(bytes("PONG "+message.split()[1]+"rn", "UTF-8"))
-            if message.find("PRIVMSG")!=-1:
-                user=message.split("!",1)[0][1:]
-                message=message.split("PRIVMSG",1)[1].split(":",1)[1]
-                if message.find(self.name)!=-1:
-                    message=message.replace(self.name, "")
-                    if message.find("!help")!=-1:
-                        commands.commands.help()
+        data=self.sock.recv(1024).decode("UTF-8")
+        print("LIST OF USERS ")
+        print(data)
+        print("*"*50)
+        if data.find("PING")!=-1:
+          self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+        if data.find("PRIVMSG")!=-1:
+          message=data.split("PRIVMSG",1)[1].split(":",1)[1]
+      
+        if message.startswith("!help"):
+              commands.commands.help()
+            
+                            
                         
             
                 

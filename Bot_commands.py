@@ -8,6 +8,7 @@ import bot1 as Bot1
 class commands():
    
     def help():
+        print ("bot helped")
         Bot1.bot_replies.send_message("Hello I am a bot"
               +"i can take the following commands "+
               "___________________________________"+
