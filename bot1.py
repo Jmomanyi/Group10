@@ -108,6 +108,7 @@ if __name__=="__main__":
  nickname="ruthlessbot"
  print("#"*50)
  bot=bot(server,channel,name,nickname)
+ bot.connect_to_server()
  
  
  
