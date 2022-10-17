@@ -51,7 +51,7 @@ class bot():
         #read messages from server and decode
         data=self.sock.recv(1024).decode("UTF-8")
         print("LIST OF USERS ")
-       
+        print(self.user_list)
         print("*"*50)
         #if the message is a ping, reply with pong to keep connection alive
         if data.find("PING")!=-1:
