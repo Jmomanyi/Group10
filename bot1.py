@@ -59,6 +59,7 @@ class bot():
         if data.find("PRIVMSG")!=-1:
           message=data.split()
           source =message[0].strip(":")
+          source=source.strip("!")
           content=' '.join(message[3:]).strip(":")
         #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
           
