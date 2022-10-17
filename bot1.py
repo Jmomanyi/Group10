@@ -62,7 +62,7 @@ class bot():
          usr=data.split()
          usr=usr[0].strip(":")
          self.user_list.append(usr)
-         print(self.user_list)
+         #print(self.user_list)
          print (f"{usr} is in channel")
          
          
