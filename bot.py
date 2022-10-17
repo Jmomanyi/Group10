@@ -1,9 +1,8 @@
 #!/bin/python3
 
 # imports
-from collections import UserList
+
 from email import message
-from turtle import clear
 import Bot_commands as commands
 import socket as s
 import sys
