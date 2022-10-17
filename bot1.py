@@ -62,8 +62,8 @@ class bot():
           print(f"source: {source} content: {content}")
           bot_replies.privatemsg(source)
           
-        if message.startswith("!help"):
-              commands.commands.help()
+        if content=="!help":
+            commands.commands.help()
             
                             
                         
@@ -97,6 +97,7 @@ class channels():
         self.user_list.append(usr)
         print(f"{usr} joined")
         print(self.user_list)
+        
     def remove_user(self, usr):       
         if usr not in self.user_list:
             self.user_list.remove(usr)
