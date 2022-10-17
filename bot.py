@@ -100,9 +100,12 @@ class bot():
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
                 s.close()
-            if data.find("PRIVMSG"+channel) != -1:
-                usr=data.split("!",1)[0][1:]
-                bot_replies.random_replies(data, usr, channel, user_list)
+            if message.find("PRIVMSG"+name) != -1:
+                print("received a private message")
+                usr=message.split("!",1)[0][1:]
+                bot_replies.privatemsg(usr) 
+                
+                
                 
                                      
   #class to handle bot replies                      
@@ -110,6 +113,7 @@ class bot_replies():
     def _init_(self,server,channel):
         self.server=server
         self.channel=channel
+        self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
     #function to handle random replies when in a channel
     def random_replies(self,msg,dest,user_list):
         if msg.find("!Hello")!=-1:
@@ -118,28 +122,30 @@ class bot_replies():
             self.send_message( f"Hi {dest}")
         elif msg.find("!slap") !=-1:
             self.send_message( f"{dest} slaps {user_list[rand.randint(0,len(user_list))]}")
-           
+        
     
     #function to send random facts when private messaged
-def random_facts(self,filename):
-    if filename=="":
+    def random_facts(self,filename,dest):
+     if filename=="":
         print("Error: filename is empty")
         sys.exit(-4)
-    else:
+     else:
     #open file 
      
-     with open(filename,"r") as file:
+      with open(filename,"r") as file:
          #read lines
             facts=file.readline()
             # pick a random fact from the lines read 
             fact=rand.choice(facts)
             #send fact to user
-            bot.send_message(self.channel, fact) 
+            bot.send_message(channel, fact) 
             #print to console
-            print(f"sent {fact} to {self.channel}")
-              
+            print(f"sent {fact} to {channel}")
+            
+    def privatemsg(self,usr):
+     self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
+    
        
-    #main function         
 if __name__=="__main__":
     server="127.0.0.1"
     channel="#Test"
