@@ -58,7 +58,7 @@ class bot():
           content=' '.join(message[3:]).strip(":")
         #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
           self.user_list.append(source)
-          print(self.userlist)
+          print(self.user_list)
           print(f"source: {source} content: {content}")
           bot_replies.privatemsg(source)
           
