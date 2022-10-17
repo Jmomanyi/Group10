@@ -50,9 +50,7 @@ class bot():
         self.user_list=[]
         #read messages from server and decode
         data=self.sock.recv(1024).decode("UTF-8")
-        print("LIST OF USERS ")
-        print(self.user_list)
-        print("*"*50)
+       
         #if the message is a ping, reply with pong to keep connection alive
         if data.find("PING")!=-1:
           self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
@@ -88,6 +86,9 @@ class bot():
           print(msg)
           self.sock.send(bytes("PRIVMSG "+source+" :"+msg+"\r\n", "UTF-8"))
           
+          print("LIST OF USERS ")
+          print(self.user_list)
+          print("*"*50)
         
             
                             
