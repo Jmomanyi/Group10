@@ -51,14 +51,18 @@ class bot():
         print("*"*50)
         if data.find("PING")!=-1:
           self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
-          
+        if data.find("JOIN")!=-1:
+         usr=data.split()
+         usr=usr[0].strip(":")
+         self.user_list.append(usr)
+         print(self.user_list)
         if data.find("PRIVMSG")!=-1:
           message=data.split()
           source =message[0].strip(":")
           content=' '.join(message[3:]).strip(":")
         #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
-          self.user_list.append(source)
-          print(self.user_list)
+          
+          
           print(f"source: {source} content: {content}")
           bot_replies.privatemsg(source)
           
