@@ -56,6 +56,7 @@ class bot():
           message=data.split()
           source =message[0].strip(":")
           content=' '.join(message[3:]).strip(":")
+        #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
           self.user_list.append(source)
           print(self.userlist)
           print(f"source: {source} content: {content}")
@@ -94,11 +95,12 @@ class channels():
     def add_user(self,usr): 
         self.user_list=[name]
         self.user_list.append(usr)
+        print(f"{usr} joined")
         print(self.user_list)
     def remove_user(self, usr):       
-        if usr in self.user_list:
+        if usr not in self.user_list:
             self.user_list.remove(usr)
-            print(self.user_list)
+            print("user quit")
 if __name__=="__main__":
  server="127.0.0.1"
  channel="#Test"
