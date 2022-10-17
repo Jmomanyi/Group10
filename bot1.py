@@ -44,18 +44,35 @@ class bot():
                 s.close()
         
     def message_handler(self,):
+        #the bot is the only one in the channel at start
         self.user_list=[name]
+        #read messages from server and decode
         data=self.sock.recv(1024).decode("UTF-8")
         print("LIST OF USERS ")
        
         print("*"*50)
+        #if the message is a ping, reply with pong to keep connection alive
         if data.find("PING")!=-1:
           self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+          
+          #if the message is a user joining the channel, add them to the user list
         if data.find("JOIN")!=-1:
          usr=data.split()
          usr=usr[0].strip(":")
          self.user_list.append(usr)
          print(self.user_list)
+         print (f"{usr} has joined the channel")
+         
+         
+         #if the message is a user leaving the channel, remove them from the user list
+        if data.find('!QUIT')!=-1:
+         user=data.split()
+         user=user[0].strip(":")
+         self.user_list.remove(user)
+         print(self.user_list)
+         print(f"{user} has left the channel")
+        
+        #if the message is a private message find the name of the user and reply.
         if data.find("PRIVMSG")!=-1:
           message=data.split()
           source =message[0].strip(":")
@@ -65,8 +82,7 @@ class bot():
           
           
           print(f"source: {source} content: {content}")
-          if content=="!help":
-                commands.commands.help()
+          self.sock.send(bytes("PRIVMSG "+source+" :"+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
           
         
             
@@ -83,30 +99,13 @@ class bot_replies():
      self.name=name
      self.nickname=nickname
      self.socket=s.socket(s.AF_INET, s.SOCK_STREAM)
-    def privatemsg(self,usr):
-         self.socket.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
+    
         
     def send_message(self,message):
         self.socket.send(bytes("PRIVMSG "+self.channel+" :"+message+"rn", "UTF-8"))  
        
           
-            
-class channels():    
-    def __init__(self,channel):
-        self.channel=channel
-        self.user_list=[]
-        
-        
-    def add_user(self,usr): 
-        self.user_list=[name]
-        self.user_list.append(usr)
-        print(f"{usr} joined")
-        print(self.user_list)
-        
-    def remove_user(self, usr):       
-        if usr not in self.user_list:
-            self.user_list.remove(usr)
-            print("user quit")
+
 if __name__=="__main__":
  server="127.0.0.1"
  channel="#Test"
