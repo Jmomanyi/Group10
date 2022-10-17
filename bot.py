@@ -90,6 +90,12 @@ class bot():
                             self.send_message(channel, "Commands: !hello, !help, !roll, !quit")
                         elif message.startswith("!roll"):
                             self.send_message(channel, str(rand.randint(1,6)))
+                            
+                        elif message.find("PRIVMSG"+name) != -1:
+                          print("received a private message")
+                          usr=message.split("!",1)[0][1:]
+                          bot_replies.privatemsg(usr)  
+                             
                         elif message.startswith("!quit"):
                             self.send_message(channel, "Bye")
                             self.sock.close()
@@ -100,10 +106,7 @@ class bot():
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
                 s.close()
-            if message.find("PRIVMSG"+name) != -1:
-                print("received a private message")
-                usr=message.split("!",1)[0][1:]
-                bot_replies.privatemsg(usr) 
+             
                 
                 
                 
