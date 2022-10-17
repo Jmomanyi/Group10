@@ -74,49 +74,34 @@ class bot():
     def main(self):
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
-            #receive message
-            message=self.sock.recv(1024)
-            #decode message
-            message=message.decode("UTF-8")
-            #print message to console
-            print(message)
-            #if message contains PING, send PONG to server
-            if message.find("PING")!=-1:
-                self.sock.send(bytes("PONG "+message.split()[1]+"\r\n", "UTF-8"))
-            #if message contains PRIVMSG, send message to the channel
-            if message.find("PRIVMSG")!=-1:
-                #split message into parts
-                message_parts=message.split()
-                #if message contains !hello, send hello message to channel
-                if message_parts[3]=="!hello":
-                    self.send_message(self.channel, "Hello")
-                #if message contains !help, send help message to channel
-                if message_parts[3]=="!help":
-                    self.send_message(self.channel, "Commands: !hello, !help, !add, !sub, !mul, !div, !roll, !flip, !quit")
-                #if message contains !add, send add message to channel
-                if message_parts[3]=="!add":
-                    self.send_message(self.channel, commands.add(message_parts[4], message_parts[5]))
-                #if message contains !sub, send sub message to channel
-                if message_parts[3]=="!sub":
-                    self.send_message(self.channel, commands.sub(message_parts[4], message_parts[5]))
-                #if message contains !mul, send mul message to channel
-                if message_parts[3]=="!mul":
-                    self.send_message(self.channel, commands.mul(message_parts[4], message_parts[5]))
-                #if message contains !div, send div message to channel
-                if message_parts[3]=="!div":
-                    self.send_message(self.channel, commands.div(message_parts[4], message_parts[5]))
-                #if message contains !roll, send roll message to channel
-                if message_parts[3]=="!roll":
-                    self.send_message(self.channel, commands.roll(message_parts[4]))
-                #if message contains !flip, send flip message to channel
-                if message_parts[3]=="!flip":
-                    self.send_message(self.channel, commands.flip())
-                #if message contains !quit, send quit message to channel
-                if message_parts[3]=="!quit":
-                    self.send_message(self.channel, "Goodbye")
+            #try receiving messages from server if failed print error and close socket
+            try:
+                data=self.sock.recv(1024).decode("UTF-8")
+                print(data)
+                if data.find("PING")!=-1:
+                    self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+                if data.find("PRIVMSG")!=-1:
+                    message=data.split("PRIVMSG",1)[1].split(":",1)[1]
+                    if message.startswith("!"):
+                        if message.startswith("!hello"):
+                            self.send_message(channel, "Hello")
+                        elif message.startswith("!help"):
+                            self.send_message(channel, "Commands: !hello, !help, !roll, !quit")
+                        elif message.startswith("!roll"):
+                            self.send_message(channel, str(rand.randint(1,6)))
+                        elif message.startswith("!quit"):
+                            self.send_message(channel, "Bye")
+                            self.sock.close()
+                            sys.exit()
+                        else:
+                            self.send_message(channel, "Command not found")
+            except s.error as e:
+                print("Error: "+str(e)+"unable to receive message")
+                s.close()
+            
+           
          
-                
-                        
+                                     
   #class to handle bot replies                      
 class bot_replies():
     def _init_(self,server,channel):
