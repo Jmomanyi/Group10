@@ -96,15 +96,15 @@ class bot():
             if Message.find("!Hello"+channel):
                 usr=Message.split("!",1)[0][1:]
                 bot.send_message(channel, f"Hello {usr}")
-                print("bot sent message to user")
+                print("bot said hello")
                 #randomly slap a user       
             if Message.find("!slap"+channel):
-                bot_replies.random_replies(usr)
+                bot_replies.random_replies()
                 print("bot sent random reply to channel")  
                 
             if Message.find("PRIVMSG"+self.name) != -1:
                 usr=Message.split("!",1)[0][1:]
-                bot_replies.random_facts(usr,"facts.txt")
+                random_facts('facts.txt')
                 print("bot sent message to user")
                         
   #class to handle bot replies                      
@@ -124,8 +124,8 @@ class bot_replies():
                  "decent"]
         reply=rand.choice(replies)
         
-        bot.send_message(self.channel, reply)
-        print(f"sent {reply} to {self.channel}")
+        bot.send_message(channel, reply)
+        print(f"sent {reply} to {channel}")
     
     #function to send random facts when private messaged
 def random_facts(self,filename):
