@@ -91,7 +91,7 @@ class bot():
                         elif message.startswith("!roll"):
                             self.send_message(channel, str(rand.randint(1,6)))
                             
-                        elif message.find("PRIVMSG"+name) != -1:
+                        elif message.find("PRIVMSG"+self.name) != -1:
                           print("received a private message")
                           usr=message.split("!",1)[0][1:]
                           bot_replies.privatemsg(usr)  
@@ -100,6 +100,16 @@ class bot():
                             self.send_message(channel, "Bye")
                             self.sock.close()
                             sys.exit()
+                        elif message.find("QUIT") != -1:
+                            usr=message.split("!",1)[0][1:]
+                            user_list.remove(usr)
+                            print(f"{usr} has left the channel")
+                            print(user_list)
+                        elif message.find("JOIN") != -1:
+                            usr=message.split("!",1)[0][1:]
+                            user_list.append(usr)
+                            print(f"{usr} has joined the channel")
+                            print(user_list)    
                             
                         else:
                             self.send_message(channel, "Command not found")
