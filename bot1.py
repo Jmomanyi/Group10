@@ -10,7 +10,7 @@ class bot():
         self.channel=channel
         self.name=name
         self.nickname=nickname
-        
+     self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
     def connect_to_server(self):
      #try connecting to server and if it fails, print error and exit
      try:
