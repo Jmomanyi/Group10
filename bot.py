@@ -90,10 +90,16 @@ class bot():
                 data=self.sock.recv(1024).decode("UTF-8")
                 print("LIST OF USERS ")
                 self.user_list=[name]
-                print(self.user_list)
+                
                 print("*"*50)
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+                    
+                if data.find("JOIN")!=-1:
+                     usr=data.split()
+                     usr=usr[0].strip(":")
+                     self.user_list.append(usr)
+                     print(self.user_list)    
                 if data.find("PRIVMSG")!=-1:
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
                     if message.startswith("!"):
