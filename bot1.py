@@ -56,7 +56,7 @@ class bot():
           self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
           
           #if the message is a user joining the channel, add them to the user list
-        if data.find("JOIN")!=-1:
+        elif data.find("JOIN")!=-1:
          usr=data.split()
          usr=usr[0].strip(":")
          self.user_list.append(usr)
@@ -65,15 +65,15 @@ class bot():
          
          
          #if the message is a user leaving the channel, remove them from the user list
-        if data.find('!QUIT')!=-1:
-         user=data.split()
-         user=user[0].strip(":")
-         self.user_list.remove(user)
-         print(self.user_list)
-         print(f"{user} has left the channel")
+        elif data.find('!QUIT')!=-1:
+            user=data.split()
+            user=user[0].strip(":")
+            self.user_list.remove(user)
+            print(self.user_list)
+            print(f"{user} has left the channel")
         
-        #if the message is a private message find the name of the user and reply.
-        if data.find("PRIVMSG")!=-1:
+         #if the message is a private message find the name of the user and reply.
+        elif data.find("PRIVMSG")!=-1:
           message=data.split()
           source =message[0].strip(":")
           source=source.strip("!")
@@ -122,7 +122,7 @@ if __name__=="__main__":
  nickname="ruthlessbot"
  bot=bot(server,channel,name,nickname)
  while True:
-   print("#"*50)
+  
    
    bot.message_handler()
  
