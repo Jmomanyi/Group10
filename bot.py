@@ -74,33 +74,48 @@ class bot():
     def main(self):
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
-            user_list=[self.name]
-            Message=self.sock.recv(2048)
-            Message=Message.decode("UTF-8")
-            Message=Message.strip("\r\n")
-            
-            if Message.find("PRIVMSG"+channel) != -1:
-                usr=Message.split("!",1)[0][1:]
-                bot.send_message(channel, f"Hello {usr}")
-                if usr in user_list: user_list.remove(usr)
-                print("#"*50)    
-                print("users in channel")
-                #print users in channel
-                print(user_list)
-                print("#"*50)
-               #keeps the connection alive
-            if Message.find("PING :") != -1:
-                self.sock.send(bytes("PONG :pingis\r\n", "UTF-8"))
-                print("pinged")
-                print("#"*50)
-               
-           
+            #receive message
+            message=self.sock.recv(1024)
+            #decode message
+            message=message.decode("UTF-8")
+            #print message to console
+            print(message)
+            #if message contains PING, send PONG to server
+            if message.find("PING")!=-1:
+                self.sock.send(bytes("PONG "+message.split()[1]+"\r\n", "UTF-8"))
+            #if message contains PRIVMSG, send message to the channel
+            if message.find("PRIVMSG")!=-1:
+                #split message into parts
+                message_parts=message.split()
+                #if message contains !hello, send hello message to channel
+                if message_parts[3]=="!hello":
+                    self.send_message(self.channel, "Hello")
+                #if message contains !help, send help message to channel
+                if message_parts[3]=="!help":
+                    self.send_message(self.channel, "Commands: !hello, !help, !add, !sub, !mul, !div, !roll, !flip, !quit")
+                #if message contains !add, send add message to channel
+                if message_parts[3]=="!add":
+                    self.send_message(self.channel, commands.add(message_parts[4], message_parts[5]))
+                #if message contains !sub, send sub message to channel
+                if message_parts[3]=="!sub":
+                    self.send_message(self.channel, commands.sub(message_parts[4], message_parts[5]))
+                #if message contains !mul, send mul message to channel
+                if message_parts[3]=="!mul":
+                    self.send_message(self.channel, commands.mul(message_parts[4], message_parts[5]))
+                #if message contains !div, send div message to channel
+                if message_parts[3]=="!div":
+                    self.send_message(self.channel, commands.div(message_parts[4], message_parts[5]))
+                #if message contains !roll, send roll message to channel
+                if message_parts[3]=="!roll":
+                    self.send_message(self.channel, commands.roll(message_parts[4]))
+                #if message contains !flip, send flip message to channel
+                if message_parts[3]=="!flip":
+                    self.send_message(self.channel, commands.flip())
+                #if message contains !quit, send quit message to channel
+                if message_parts[3]=="!quit":
+                    self.send_message(self.channel, "Goodbye")
+         
                 
-            if Message.find("PRIVMSG"+self.name) != -1:
-                usr=Message.split("!",1)[0][1:]
-                print (usr)
-                random_facts(usr,'facts.txt')
-                print("bot sent message to user")
                         
   #class to handle bot replies                      
 class bot_replies():
