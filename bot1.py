@@ -65,10 +65,10 @@ class bot():
           
           
           print(f"source: {source} content: {content}")
-          bot_replies.privatemsg(source)
+          if content=="!help":
+                commands.commands.help()
           
-        if data.find("!help")!=-1:
-            commands.commands.help()
+        
             
                             
                         
@@ -88,7 +88,7 @@ class bot_replies():
         
     def send_message(self,message):
         self.socket.send(bytes("PRIVMSG "+self.channel+" :"+message+"rn", "UTF-8"))  
-        
+       
           
             
 class channels():    
