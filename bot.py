@@ -89,7 +89,7 @@ class bot():
             try:
                 data=self.sock.recv(1024).decode("UTF-8")
                 print("LIST OF USERS ")
-                self.user_list=self.list(self.name)
+                self.user_list=[name]
                 print(self.user_list)
                 print("*"*50)
                 if data.find("PING")!=-1:
