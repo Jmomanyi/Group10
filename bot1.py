@@ -62,7 +62,7 @@ class bot():
           print(f"source: {source} content: {content}")
           bot_replies.privatemsg(source)
           
-        if content=="!help":
+        if content.find("!help")!=-1:
             commands.commands.help()
             
                             
