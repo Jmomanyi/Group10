@@ -1,10 +1,12 @@
-import Bot_commands as commands
-import socket as s
-import sys
-import os
+import Bot_commands as commands #import commands class
+import socket as s #import socket
+import sys #import sys
+#import random 
 import random as rand
+#class bot 
 
 class bot():
+    #receive server channel name and nickname as parameters to construct class
     def __init__(self,server,channel,name,nickname):
         self.server=server
         self.channel=channel
@@ -13,8 +15,8 @@ class bot():
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
         self.user_list=[]
-        self.connect_to_server()
-        self.join_channel(self.channel)
+        self.connect_to_server()#call connnect to server method
+        self.join_channel(self.channel)#call the join channel method
         
     def connect_to_server(self):
      #try connecting to server and if it fails, print error and exit
@@ -45,7 +47,7 @@ class bot():
         
     def message_handler(self,):
         #the bot is the only one in the channel at start
-        self.user_list=[name]
+        self.user_list=[]
         #read messages from server and decode
         data=self.sock.recv(1024).decode("UTF-8")
         print("LIST OF USERS ")
@@ -78,13 +80,14 @@ class bot():
           source =message[0].strip(":")
           source=source.strip("!")
           content=' '.join(message[3:]).strip(":")
-        #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
+         #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
           
           
           print(f"source: {source} content: {content}")
           msg=rand.choice(list(open("facts.txt")))
           print(msg)
-          self.sock.send(bytes("PRIVMSG "+source+" :"+msg+"\r\n", "UTF-8"))
+        
+          bot_replies.send_message(msg,source)
           
         
             
@@ -103,9 +106,13 @@ class bot_replies():
      self.socket=s.socket(s.AF_INET, s.SOCK_STREAM)
     
         
-    def send_message(self,message):
-        self.socket.send(bytes("PRIVMSG "+self.channel+" :"+message+"rn", "UTF-8"))  
-       
+    def send_message(self,message,destination):
+        #if destination and message are empty print error 
+        if destination!="" and message!="":
+           
+            self.socket.send(bytes("PRIVMSG "+destination+" :"+message+"\r\n", "UTF-8"))
+        else:
+            print("Error: destination or message is empty")
           
 
 if __name__=="__main__":
