@@ -19,7 +19,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
-        
+        self.user_list=[]
         self.connect_to_server()
         self.join_channel(self.channel)
         #conect to server
@@ -51,6 +51,14 @@ class bot():
             except s.error as e:
                 print("Error: "+str(e)+"unable to join channel")
                 s.close()
+                
+    def  list(self,channel):
+        self.sock.send(bytes("NAMES"+channel+"\r\n", "UTF-8"))
+        message=(self.sock.recv(2048).decode("UTF-8")).strip('nr')
+        user_list.extend(message.split(":",3)[3].split().split(""))
+        user_list=list(set(user_list))
+        print(user_list)
+        return user_list       
     #send message function
     # receives the socket, destination and message as inputs then send the message to the required channel or destination
     def send_message(self,dest, message):
@@ -72,7 +80,7 @@ class bot():
          
 
     def main(self):
-        user_list=[name]
+        
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
             
