@@ -3,6 +3,7 @@
 # imports
 from collections import UserList
 from email import message
+from turtle import clear
 import Bot_commands as commands
 import socket as s
 import sys
@@ -75,10 +76,14 @@ class bot():
         user_list=[name]
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
+            
+            
             #try receiving messages from server if failed print error and close socket
             try:
                 data=self.sock.recv(1024).decode("UTF-8")
-                print(data)
+                
+                print(user_list)
+                print("*"*50)
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                 if data.find("PRIVMSG")!=-1:
