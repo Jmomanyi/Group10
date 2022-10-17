@@ -86,8 +86,7 @@ class bot():
           #print(f"source: {source} content: {content}")
           msg=rand.choice(list(open("facts.txt")))
           print(msg)
-        
-          bot_replies.send_message(self.channel,msg)
+          self.sock.send(bytes("PRIVMSG "+source+" :"+msg+"\r\n", "UTF-8"))
           
         
             
