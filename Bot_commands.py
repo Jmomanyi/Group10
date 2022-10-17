@@ -7,7 +7,7 @@ import bot1 as Bot1
 #class to handle bot commands
 class commands():
    
-    def help(usr):
+    def help():
         Bot1.bot_replies.send_message("Hello I am a bot"
               +"i can take the following commands "+
               "___________________________________"+

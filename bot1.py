@@ -54,29 +54,9 @@ class bot():
                 message=message.split("PRIVMSG",1)[1].split(":",1)[1]
                 if message.find(self.name)!=-1:
                     message=message.replace(self.name, "")
-                    if message.find("list")!=-1:
-                        self.list(self.channel)
-                    if message.find("help")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.help()+"rn", "UTF-8"))
-                    if message.find("roll")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.roll()+"rn", "UTF-8"))
-                    if message.find("flip")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.flip()+"rn", "UTF-8"))
-                    if message.find("8ball")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.eightball()+"rn", "UTF-8"))
-                    if message.find("time")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.time()+"rn", "UTF-8"))
-                    if message.find("weather")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.weather()+"rn", "UTF-8"))
-                    if message.find("joke")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.joke()+"rn", "UTF-8"))
-                    if message.find("quote")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.quote()+"rn", "UTF-8"))
-                    if message.find("fact")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.fact()+"rn", "UTF-8"))
-                    if message.find("news")!=-1:
-                        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+commands.news()+"rn", "UTF-8"))
-                    
+                    if message.find("!help")!=-1:
+                        commands.commands.help()
+                        
             
                 
             
@@ -90,7 +70,8 @@ class bot_replies():
     def private_message(self,username,message):
         self.sock.send(bytes("PRIVMSG "+username+" :"+message+"rn", "UTF-8"))
         
-         
+    def send_message(self,message):
+        self.sock.send(bytes("PRIVMSG "+self.channel+" :"+message+"rn", "UTF-8"))    
             
 class channels():    
     def __init__(self,channel):
