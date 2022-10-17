@@ -63,7 +63,7 @@ class bot():
          usr=usr[0].strip(":")
          self.user_list.append(usr)
          print(self.user_list)
-         print (f"{usr} has joined the channel")
+         print (f"{usr} is in channel")
          
          
          #if the message is a user leaving the channel, remove them from the user list
