@@ -19,7 +19,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
-        user_list=[]
+        
         self.connect_to_server()
         self.join_channel(self.channel)
         #conect to server
@@ -72,6 +72,7 @@ class bot():
          
 
     def main(self):
+        user_list=[name]
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
             #try receiving messages from server if failed print error and close socket
@@ -93,14 +94,16 @@ class bot():
                             self.send_message(channel, "Bye")
                             self.sock.close()
                             sys.exit()
+                            
                         else:
                             self.send_message(channel, "Command not found")
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
                 s.close()
-            
-           
-         
+            if data.find("PRIVMSG"+channel) != -1:
+                usr=data.split("!",1)[0][1:]
+                bot_replies.random_replies(data, usr, channel, user_list)
+                
                                      
   #class to handle bot replies                      
 class bot_replies():
@@ -108,19 +111,14 @@ class bot_replies():
         self.server=server
         self.channel=channel
     #function to handle random replies when in a channel
-    def random_replies(self):
-        replies=["Hello", 
-                 "Hi",
-                 "How are you?",
-                 "I am fine",
-                 "interesting",
-                 "whoaaaa",
-                 "nice",
-                 "decent"]
-        reply=rand.choice(replies)
-        
-        bot.send_message(channel, reply)
-        print(f"sent {reply} to {channel}")
+    def random_replies(self,msg,dest,user_list):
+        if msg.find("!Hello")!=-1:
+            self.send_message( f"Hello {dest}")
+        elif msg.find("!Hi")!=-1:
+            self.send_message( f"Hi {dest}")
+        elif msg.find("!slap") !=-1:
+            self.send_message( f"{dest} slaps {user_list[rand.randint(0,len(user_list))]}")
+           
     
     #function to send random facts when private messaged
 def random_facts(self,filename):
