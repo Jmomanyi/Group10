@@ -80,21 +80,7 @@ class bot():
          
 
     def main(self):
-        data=self.sock.recv(1024).decode("UTF-8")
-        if data.find("JOIN")!=-1:
-          usr=data.split()
-          usr=usr[0].strip(":")
-          self.user_list.append(usr)
-          print(self.user_list)   
-              
-        elif data.find('!QUIT')!=-1:
-         user=data.split()
-         user=user[0].strip(":")
-         self.user_list.remove(user)
-         print("LIST OF USERS ")
-         print(self.user_list)
-         print("*"*50)
-         print(f"{user} has left the channel")             
+                    
                       
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
@@ -107,6 +93,21 @@ class bot():
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     
+                
+                if data.find("JOIN")!=-1:
+                  usr=data.split()
+                  usr=usr[2].strip(":")
+                  self.user_list.append(usr)
+                  print(self.user_list)   
+              
+                elif data.find('!QUIT')!=-1:
+                 user=data.split()
+                 user=user[0].strip(":")
+                 self.user_list.remove(user)
+                 print("LIST OF USERS ")
+                 print(self.user_list)
+                 print("*"*50)
+                 print(f"{user} has left the channel")     
                
                 if data.find("PRIVMSG")!=-1:
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
@@ -117,7 +118,9 @@ class bot():
                             self.send_message(channel, "Commands: !hello, !help, !roll, !quit")
                         elif message.startswith("!roll"):
                             self.send_message(channel, str(rand.randint(1,6)))
-                            
+                        elif message.startswith("!fact"):
+                           msg=rand.choice(list(open("facts.txt"))) 
+                           self.send_message(channel,msg)   
                         elif message.find("PRIVMSG"+self.name) != -1:
                           print("received a private message")
                    
