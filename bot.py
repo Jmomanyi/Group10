@@ -83,7 +83,7 @@ class bot():
                     
                       
         #while loop to handle connection, sending of messages and receiving of messages
-        while True:
+        while 1:
             
             
             #try receiving messages from server if failed print error and close socket
@@ -93,13 +93,13 @@ class bot():
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     
-                
+                #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
                   usr=data.split()
                   usr=usr[2].strip(":")
                   self.user_list.append(usr)
                   print(self.user_list)   
-              
+              #Keep track of users in channel who PART
                 elif data.find('!QUIT')!=-1:
                  user=data.split()
                  user=user[0].strip(":")
@@ -109,20 +109,32 @@ class bot():
                  print("*"*50)
                  print(f"{user} has left the channel")     
                
+               #respond to messages in channel
+                #respond hello
+                #provide help
+                #roll a dice
+                #slap a user
                 if data.find("PRIVMSG")!=-1:
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
+                    print(message)
                     if message.startswith("!"):
                         if message.startswith("!hello"):
                             self.send_message(channel, "Hello")
                         elif message.startswith("!help"):
-                            self.send_message(channel, "Commands: !hello, !help, !roll, !quit")
+                            self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
                             self.send_message(channel, str(rand.randint(1,6)))
-                        elif message.startswith("!fact"):
-                           msg=rand.choice(list(open("facts.txt"))) 
-                           self.send_message(channel,msg)   
-                        elif message.find("PRIVMSG"+self.name) != -1:
-                          print("received a private message")
+                        elif message.startswith("!slap"):
+                           self.send_message(channel,"slaps"+rand.choice(self.user_list))
+                           
+                           
+                            #respond to private messagees
+                           usr=message[0].strip(":")
+                        elif message.find("PRIVMSG"+usr) != -1:
+                          print(f"received a private message from {usr}")
+                          msg=rand.choice(list(open("facts.txt")))
+                          self.send_message(usr, "msg")
+                          
                    
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
