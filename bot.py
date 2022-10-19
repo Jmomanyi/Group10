@@ -91,15 +91,16 @@ class bot():
                     
                       
         #while loop to handle connection, sending of messages and receiving of messages
-        while 1:
+        while True:
             
             
             #try receiving messages from server if failed print error and close socket
             try:
                 data=self.sock.recv(1024).decode("UTF-8")
-                
+                bot.list(self.channel)
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+                    
                 """
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
@@ -185,8 +186,9 @@ if __name__=="__main__":
     nickname="ruthlessbot"
     print("#"*50)
     bot=bot(server, channel, name, nickname)
+    
     bot.main()
-    bot.list(channel)
+    
     
                
     
