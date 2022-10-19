@@ -3,7 +3,7 @@
 # imports
 
 
-import Bot_commands as commands
+
 import socket as s
 import sys
 import os
@@ -12,14 +12,14 @@ import random as rand
 #main class for the bot
 class bot():
     #instanciate variables
-    def __init__(self, server, channel, name, nickname):
+    def __init__(self, server, channel, name, nickname,list_of_users):
         self.server=server
         self.channel=channel
         self.name=name
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
-        self.user_list=[self.name]
+        self.user_list=list_of_users
         self.connect_to_server()
         self.join_channel(self.channel)
         #conect to server
@@ -104,20 +104,24 @@ class bot():
                 
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
-                    print("*"*20)
-                    print(self.user_list)
-                    print("*"*20)
+                    self.user_list=self.add_user(self.name)
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
                   user=self.get_user(data)
                   self.add_user(user)
                   print(f"{user} has joined")
+                  print("*"*20)
+                  print(self.user_list)
+                  print("*"*20)
               #Keep track of users in channel who PART
                 elif data.find('QUIT')!=-1:
                     user=self.get_leaving_user(data)
                     self.remove_user(user)
                     print("user left: "+user)
                
+                    print("*"*20)
+                    print(self.user_list)
+                    print("*"*20)
                #respond to messages in channel
                 #respond hello
                 #provide help
@@ -141,13 +145,13 @@ class bot():
                             else:     
                               self.send_message(channel,"slaps"+""+randuser+""+"with a large trout \n")
                            
-                           
-                        
-                        elif self.name in message[1]:
+                  
+                        #private message
+                        elif data.find("PRIVMSG"+self.name+":")!=-1:
                             print("I was mentioned")
-                            recv=str(message[1].split('!')[0])
-                            #msg_to_send=rand.choice(list(open("facts.txt")))
-                            bot_replies.privatemsg(recv)
+                            recv=data.split('!',1)[0][1:]
+                            msg_to_send=rand.choice(list(open("facts.txt")))
+                            bot_replies.privatemsg(recv,msg_to_send)
                    
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
@@ -182,8 +186,11 @@ class bot_replies():
      
     
             
-    def privatemsg(self,usr):
-     self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
+    def privatemsg(self,usr,msg):
+        
+        self.sock.send(bytes("PRIVMSG "+usr+" :"+msg+"\r\n", "UTF-8"))
+        print("sent")
+     
     
        
 if __name__=="__main__":
@@ -191,9 +198,9 @@ if __name__=="__main__":
     channel="#Test"
     name="bot_peter"
     nickname="ruthlessbot"
-    
+    list_of_users=[]
     print("#"*50)
-    bot=bot(server, channel, name, nickname)
+    bot=bot(server, channel, name, nickname, list_of_users)
     bot.main()
     
                

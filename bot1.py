@@ -1,4 +1,4 @@
-import Bot_commands as commands #import commands class
+
 import socket as s #import socket
 import sys #import sys
 #import random 
