@@ -28,8 +28,8 @@ class bot():
         try:
             self.sock.connect((self.server, 6667))
             print(f"connected to {self.host_ip}")
-            self.sock.send(bytes("USER  "+self.nickname+" :"+self.nickname+"\r\n", "UTF-8"))
-            self.sock.send(bytes("NICK "+self.name+"\r\n", "UTF-8"))
+            self.sock.send(bytes("USER  "+self.name+" :"+self.name+"\r\n", "UTF-8"))
+            self.sock.send(bytes("NICK "+self.nickname+"\r\n", "UTF-8"))
         except s.error as e:
             print(f"Error: {str(e)} unable to connect to server")
             sys.exit()
