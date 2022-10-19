@@ -83,9 +83,14 @@ class bot():
         return self.user_list
     
     def remove_user(self,user):
-        self.user_list.remove(user)
-        return self.user_list
-    
+        if user not in self.user_list:
+            print("Error: user not in list")
+        else:    
+           try:
+             self.user_list.remove(user)
+             return self.user_list
+           except ValueError as e:
+               sys.exit(-4)
     def main(self):
                     
                       
