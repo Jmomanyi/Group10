@@ -76,8 +76,16 @@ class bot():
                 self.sock.send(bytes("PRIVMSG "+dest+" :"+message+"\r\n", "UTF-8"))
             except s.error as e:
                 print("Error: "+str(e)+"unable to send message")
-                s.close()        
-         
+                s.close()  
+                      
+    #find user from server
+    def list(self,channel):
+        self.sock.send(bytes("NAMES"+channel+"\r\n", "UTF-8"))
+        message=(self.sock.recv(2048).decode("UTF-8")).strip('nr')
+        #self.user_list.extend(message.split(":",3)[3].split())
+        self.user_list=list(set(self.user_list))
+        print(self.user_list)
+        return self.user_list  
 
     def main(self):
                     
@@ -92,7 +100,7 @@ class bot():
                 
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
-                    
+                """
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
                   usr=data.split()
@@ -101,6 +109,7 @@ class bot():
                   print(self.user_list)   
               #Keep track of users in channel who PART
                 elif data.find('!QUIT')!=-1:
+                 print (data)
                  user=data.split()
                  user=user[0].strip(":")
                  self.user_list.remove(user)
@@ -108,7 +117,7 @@ class bot():
                  print(self.user_list)
                  print("*"*50)
                  print(f"{user} has left the channel")     
-               
+                """
                #respond to messages in channel
                 #respond hello
                 #provide help
@@ -128,13 +137,15 @@ class bot():
                            self.send_message(channel,"slaps"+rand.choice(self.user_list))
                            
                            
-                            #respond to private messagees
+                        """   #respond to private messagees
                            usr=message[0].strip(":")
                         elif message.find("PRIVMSG"+usr) != -1:
                           print(f"received a private message from {usr}")
                           msg=rand.choice(list(open("facts.txt")))
                           self.send_message(usr, "msg")
-                          
+                        """
+                    else :
+                        bot_replies.random_replies(channel)  
                    
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
@@ -151,32 +162,17 @@ class bot_replies():
         self.channel=channel
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
     #function to handle random replies when in a channel
-    def random_replies(self,msg,dest,user_list):
-        if msg.find("!Hello")!=-1:
-            self.send_message( f"Hello {dest}")
-        elif msg.find("!Hi")!=-1:
-            self.send_message( f"Hi {dest}")
-        elif msg.find("!slap") !=-1:
-            self.send_message( f"{dest} slaps {user_list[rand.randint(0,len(user_list))]}")
-        
-    
-    #function to send random facts when private messaged
-    def random_facts(self,filename,dest):
-     if filename=="":
-        print("Error: filename is empty")
-        sys.exit(-4)
-     else:
-    #open file 
+    def random_replies(self,channel):
+       randlist=["hello",
+                 "whoami",
+                 "how are you",
+                 "what is your name",
+                 "what is your age"
+                 ]
+       msg=rand.choice(randlist)
+       bot.send_message(channel,msg)
      
-      with open(filename,"r") as file:
-         #read lines
-            facts=file.readline()
-            # pick a random fact from the lines read 
-            fact=rand.choice(facts)
-            #send fact to user
-            bot.send_message(channel, fact) 
-            #print to console
-            print(f"sent {fact} to {channel}")
+    
             
     def privatemsg(self,usr):
      self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
@@ -190,6 +186,7 @@ if __name__=="__main__":
     print("#"*50)
     bot=bot(server, channel, name, nickname)
     bot.main()
+    bot.list(channel)
     
                
     
