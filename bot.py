@@ -136,7 +136,10 @@ class bot():
                             self.send_message(channel, f"You rolled a {diceroll}")
                         elif message.startswith("!slap"):
                             randuser=rand.choice(self.user_list)
-                            self.send_message(channel,"slaps"+randuser+"with a large trout \n")
+                            if randuser==self.name:
+                                self.send_message(channel, f"Can't slap myself")
+                            else:     
+                              self.send_message(channel,"slaps"+""+randuser+""+"with a large trout \n")
                            
                            
                         """   #respond to private messagees
