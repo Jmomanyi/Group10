@@ -120,7 +120,8 @@ class bot():
               #Keep track of users in channel who PART
                 elif data.find('QUIT')!=-1:
                     user=self.get_user(data)
-                    remov=self.remove_user(user)
+                    user=''.join(user)
+                    self.remove_user(user)
                     print("user left: "+user)
                
                     
