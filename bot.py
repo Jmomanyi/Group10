@@ -109,14 +109,14 @@ class bot():
                     print("*"*20)
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
-                  usr=self.get_user(data)
-                  self.add_user(usr)
-                  print(f"{usr} has joined")
+                  user=self.get_user(data)
+                  self.add_user(user)
+                  print(f"{user} has joined")
               #Keep track of users in channel who PART
-                elif data.find('!leaving')!=-1:
-                    us=self.get_leaving_user(data)
-                    self.remove_user(us)
-                    print("user left: "+us)
+                elif data.find('QUIT')!=-1:
+                    user=self.get_leaving_user(data)
+                    self.remove_user(user)
+                    print("user left: "+user)
                
                #respond to messages in channel
                 #respond hello
@@ -146,8 +146,8 @@ class bot():
                         elif self.name in message[1]:
                             print("I was mentioned")
                             recv=str(message[1].split('!')[0])
-                            msg_to_send=rand.choice(list(open("facts.txt")))
-                            self.send_message(recv,msg_to_send)
+                            #msg_to_send=rand.choice(list(open("facts.txt")))
+                            bot_replies.privatemsg(recv)
                    
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
