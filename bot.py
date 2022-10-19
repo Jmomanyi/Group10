@@ -28,7 +28,7 @@ class bot():
         try:
             self.sock.connect((self.server, 6667))
             print(f"connected to {self.host_ip}")
-            self.sock.send(bytes("USER "+self.nickname+" "+self.nickname+" "+self.nickname+" :"+self.nickname+"\r\n", "UTF-8"))
+            self.sock.send(bytes("USER  "+self.nickname+" :"+self.nickname+"\r\n", "UTF-8"))
             self.sock.send(bytes("NICK "+self.name+"\r\n", "UTF-8"))
         except s.error as e:
             print(f"Error: {str(e)} unable to connect to server")
@@ -82,7 +82,7 @@ class bot():
     def List(self,channel):
         self.sock.send(bytes("NAMES"+channel+"\r\n", "UTF-8"))
         message=(self.sock.recv(2048).decode("UTF-8")).strip('nr')
-        self.user_list.extend(message.split(":",3)[3].split())
+        #self.user_list.extend(message.split(":",3)[3].split())
         self.user_list=list(set(self.user_list))
         print(self.user_list)
         return self.user_list  
