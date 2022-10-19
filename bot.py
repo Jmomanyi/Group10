@@ -103,7 +103,7 @@ class bot():
                 
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
-                    
+                    print(self.user_list)
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
                   user=self.get_user(data)
