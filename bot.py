@@ -12,14 +12,14 @@ import random as rand
 #main class for the bot
 class bot():
     #instanciate variables
-    def __init__(self, server, channel, name, nickname,list_of_users):
+    def __init__(self, server, channel, name, nickname):
         self.server=server
         self.channel=channel
         self.name=name
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
-        self.user_list=list_of_users
+        self.user_list=[]
         self.connect_to_server()
         self.join_channel(self.channel)
         #conect to server
@@ -119,9 +119,7 @@ class bot():
                     self.remove_user(user)
                     print("user left: "+user)
                
-                    print("*"*20)
-                    print(self.user_list)
-                    print("*"*20)
+                    
                #respond to messages in channel
                 #respond hello
                 #provide help
@@ -198,9 +196,9 @@ if __name__=="__main__":
     channel="#Test"
     name="bot_peter"
     nickname="ruthlessbot"
-    list_of_users=[]
-    print("#"*50)
-    bot=bot(server, channel, name, nickname, list_of_users)
+    
+    
+    bot=bot(server, channel, name, nickname)
     bot.main()
     
                
