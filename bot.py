@@ -97,11 +97,11 @@ class bot():
             #try receiving messages from server if failed print error and close socket
             try:
                 data=self.sock.recv(1024).decode("UTF-8")
-                bot.List(self.channel)
+                
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     
-                """
+              
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
                   usr=data.split()
@@ -118,7 +118,7 @@ class bot():
                  print(self.user_list)
                  print("*"*50)
                  print(f"{user} has left the channel")     
-                """
+                
                #respond to messages in channel
                 #respond hello
                 #provide help
