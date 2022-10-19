@@ -157,6 +157,7 @@ class bot_replies():
                  "what is your age"
                  ]
        msg=rand.choice(randlist)
+       print(msg)
        bot.send_message(channel,msg)
      
     
