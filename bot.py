@@ -52,13 +52,7 @@ class bot():
                 print("Error: "+str(e)+"unable to join channel")
                 s.close()
                 
-    def  list(self,channel):
-        self.sock.send(bytes("NAMES"+channel+"\r\n", "UTF-8"))
-        message=(self.sock.recv(2048).decode("UTF-8")).strip('nr')
-        user_list.extend(message.split(":",3)[3].split().split(""))
-        user_list=list(set(user_list))
-        print(user_list)
-        return user_list       
+      
     #send message function
     # receives the socket, destination and message as inputs then send the message to the required channel or destination
     def send_message(self,dest, message):
@@ -77,20 +71,14 @@ class bot():
             except s.error as e:
                 print("Error: "+str(e)+"unable to send message")
                 s.close()        
-    #find user from server
-    def list(self,channel):
-        self.sock.send(bytes("NAMES"+channel+"\r\n", "UTF-8"))
-        message=(self.sock.recv(2048).decode("UTF-8")).strip('nr')
-        #self.user_list.extend(message.split(":",3)[3].split())
-        self.user_list=list(set(self.user_list))
-        print(self.user_list)
-        return self.user_list  
+
+   
 
     def main(self):
                     
                       
         #while loop to handle connection, sending of messages and receiving of messages
-        while 1:
+        while True:
             
             
             #try receiving messages from server if failed print error and close socket
@@ -144,7 +132,7 @@ class bot():
                           self.send_message(usr, "msg")
                         """
                     else :
-                        bot_replies.random_replies(channel)  
+                        bot_replies.random_replies()  
                    
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
@@ -161,7 +149,7 @@ class bot_replies():
         self.channel=channel
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
     #function to handle random replies when in a channel
-    def random_replies(self,channel):
+    def random_replies():
        randlist=["hello",
                  "whoami",
                  "how are you",
