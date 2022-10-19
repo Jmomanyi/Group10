@@ -74,15 +74,10 @@ class bot():
                    
     def  get_user(self,data):
         user=data.split()
-        user=user[2].strip(":")
-        user=user.split("!")
-        return user
-    def get_leaving_user(self,data):
-        user=data.split()
         user=user[0].strip(":")
         user=user.split("!")
-        user=user[0].strip(":")
         return user
+   
     def add_user(self,user):
         self.user_list.append(user)
         return self.user_list
@@ -105,18 +100,22 @@ class bot():
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     self.user_list=self.add_user(self.name)
+                    
+                    
+                    
+                    
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
-                  user=self.get_user(data)
-                  self.add_user(user)
-                  print(f"{user} has joined")
-                  print("*"*20)
-                  print(self.user_list)
-                  print("*"*20)
+                    user=self.get_user(data)
+                    self.add_user(user)
+                    print(user+"has joined.")
+                    
+                    
+                                      
               #Keep track of users in channel who PART
                 elif data.find('QUIT')!=-1:
-                    user=self.get_leaving_user(data)
-                    self.remove_user(user)
+                    user=self.get_user(data)
+                    remov=self.remove_user(user)
                     print("user left: "+user)
                
                     
