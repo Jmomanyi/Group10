@@ -74,7 +74,8 @@ class bot():
                    
     def  get_user(self,data):
         user=data.split()
-        user=user[2].strip(":","!")
+        user=user[2].strip(":")
+        user=user.split("!")
         return user
     def get_leaving_user(self,data):
         user=data.split()
