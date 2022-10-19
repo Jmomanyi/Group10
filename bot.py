@@ -2,7 +2,7 @@
 
 # imports
 
-
+from email import message
 import Bot_commands as commands
 import socket as s
 import sys
@@ -28,8 +28,8 @@ class bot():
         try:
             self.sock.connect((self.server, 6667))
             print(f"connected to {self.host_ip}")
-            self.sock.send(bytes("USER  "+self.name+" :"+self.name+"\r\n", "UTF-8"))
-            self.sock.send(bytes("NICK "+self.nickname+"\r\n", "UTF-8"))
+            self.sock.send(bytes("USER "+self.nickname+" "+self.nickname+" "+self.nickname+" :"+self.nickname+"\r\n", "UTF-8"))
+            self.sock.send(bytes("NICK "+self.name+"\r\n", "UTF-8"))
         except s.error as e:
             print(f"Error: {str(e)} unable to connect to server")
             sys.exit()
@@ -76,10 +76,9 @@ class bot():
                 self.sock.send(bytes("PRIVMSG "+dest+" :"+message+"\r\n", "UTF-8"))
             except s.error as e:
                 print("Error: "+str(e)+"unable to send message")
-                s.close()  
-                      
+                s.close()        
     #find user from server
-    def List(self,channel):
+    def list(self,channel):
         self.sock.send(bytes("NAMES"+channel+"\r\n", "UTF-8"))
         message=(self.sock.recv(2048).decode("UTF-8")).strip('nr')
         #self.user_list.extend(message.split(":",3)[3].split())
@@ -91,7 +90,7 @@ class bot():
                     
                       
         #while loop to handle connection, sending of messages and receiving of messages
-        while True:
+        while 1:
             
             
             #try receiving messages from server if failed print error and close socket
@@ -101,7 +100,6 @@ class bot():
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     
-              
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
                   usr=data.split()
@@ -118,7 +116,7 @@ class bot():
                  print(self.user_list)
                  print("*"*50)
                  print(f"{user} has left the channel")     
-                
+               
                #respond to messages in channel
                 #respond hello
                 #provide help
@@ -186,9 +184,7 @@ if __name__=="__main__":
     nickname="ruthlessbot"
     print("#"*50)
     bot=bot(server, channel, name, nickname)
-    
     bot.main()
-    
     
                
     
