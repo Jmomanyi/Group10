@@ -19,7 +19,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
-        self.user_list=[]
+        self.user_list=[name]
         self.connect_to_server()
         self.join_channel(self.channel)
         #conect to server
@@ -76,6 +76,12 @@ class bot():
         user=data.split()
         user=user[0].strip(":")
         return user
+    def get_leaving_user(self,data):
+        user=data.split()
+        user=user[0].strip(":")
+        user=user.split("!")
+        user=user[0].strip(":")
+        return user
     def add_user(self,user):
         self.user_list.append(user)
         return self.user_list
@@ -101,12 +107,12 @@ class bot():
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
                   user=self.get_user(data)
-                  addu=self.add_user(user)
+                  self.add_user(user)
                   print("user joined: "+user)
               #Keep track of users in channel who PART
-                elif data.find('!QUIT')!=-1:
-                    us=self.get_user(data)
-                    remov=self.remove_user(us)
+                elif data.find('!leaving')!=-1:
+                    us=self.get_leaving_user(data)
+                    self.remove_user(us)
                     print("user left: "+us)
                
                #respond to messages in channel
