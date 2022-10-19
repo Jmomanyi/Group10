@@ -2,7 +2,7 @@
 
 # imports
 
-from email import message
+
 import Bot_commands as commands
 import socket as s
 import sys
@@ -19,7 +19,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())
-        self.user_list=[name]
+        self.user_list=[self.name]
         self.connect_to_server()
         self.join_channel(self.channel)
         #conect to server
@@ -142,15 +142,12 @@ class bot():
                               self.send_message(channel,"slaps"+""+randuser+""+"with a large trout \n")
                            
                            
-                        """   #respond to private messagees
-                           usr=message[0].strip(":")
-                        elif message.find("PRIVMSG"+usr) != -1:
-                          print(f"received a private message from {usr}")
-                          msg=rand.choice(list(open("facts.txt")))
-                          self.send_message(usr, "msg")
-                        """
-                    else :
-                        bot_replies.random_replies()  
+                        
+                        elif self.name in message[1]:
+                            print("I was mentioned")
+                            recv=str(message[1].split('!')[0])
+                            msg_to_send=rand.choice(list(open("facts.txt")))
+                            self.send_message(recv,msg_to_send)
                    
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
@@ -194,6 +191,7 @@ if __name__=="__main__":
     channel="#Test"
     name="bot_peter"
     nickname="ruthlessbot"
+    
     print("#"*50)
     bot=bot(server, channel, name, nickname)
     bot.main()
