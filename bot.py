@@ -104,12 +104,14 @@ class bot():
                 
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+                    print("*"*20)
                     print(self.user_list)
+                    print("*"*20)
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
-                  user=self.get_user(data)
-                  self.add_user(user)
-                  print("user joined: "+user)
+                  usr=self.get_user(data)
+                  self.add_user(usr)
+                  print(f"{usr} has joined")
               #Keep track of users in channel who PART
                 elif data.find('!leaving')!=-1:
                     us=self.get_leaving_user(data)
