@@ -2,7 +2,7 @@
 
 # imports
 
-from email import message
+
 import Bot_commands as commands
 import socket as s
 import sys
@@ -79,10 +79,10 @@ class bot():
                 s.close()  
                       
     #find user from server
-    def list(self,channel):
+    def List(self,channel):
         self.sock.send(bytes("NAMES"+channel+"\r\n", "UTF-8"))
         message=(self.sock.recv(2048).decode("UTF-8")).strip('nr')
-        #self.user_list.extend(message.split(":",3)[3].split())
+        self.user_list.extend(message.split(":",3)[3].split())
         self.user_list=list(set(self.user_list))
         print(self.user_list)
         return self.user_list  
@@ -97,7 +97,7 @@ class bot():
             #try receiving messages from server if failed print error and close socket
             try:
                 data=self.sock.recv(1024).decode("UTF-8")
-                bot.list(self.channel)
+                bot.List(self.channel)
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     
