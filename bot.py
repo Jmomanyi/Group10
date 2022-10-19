@@ -70,10 +70,20 @@ class bot():
                 self.sock.send(bytes("PRIVMSG "+dest+" :"+message+"\r\n", "UTF-8"))
             except s.error as e:
                 print("Error: "+str(e)+"unable to send message")
-                s.close()        
-
-   
-
+                s.close()     
+                   
+    def  get_user(self,data):
+        user=data.split()
+        user=user[0].strip(":")
+        return user
+    def add_user(self,user):
+        self.user_list.append(user)
+        return self.user_list
+    
+    def remove_user(self,user):
+        self.user_list.remove(user)
+        return self.user_list
+    
     def main(self):
                     
                       
@@ -90,20 +100,14 @@ class bot():
                     
                 #keep track of users in channel who JOIN
                 if data.find("JOIN")!=-1:
-                  usr=data.split()
-                  usr=usr[2].strip(":")
-                  self.user_list.append(usr)
-                  print(self.user_list)   
+                  user=self.get_user(data)
+                  addu=self.add_user(user)
+                  print("user joined: "+user)
               #Keep track of users in channel who PART
                 elif data.find('!QUIT')!=-1:
-                 print (data)
-                 user=data.split()
-                 user=user[0].strip(":")
-                 self.user_list.remove(user)
-                 print("LIST OF USERS ")
-                 print(self.user_list)
-                 print("*"*50)
-                 print(f"{user} has left the channel")     
+                    us=self.get_user(data)
+                    remov=self.remove_user(us)
+                    print("user left: "+us)
                
                #respond to messages in channel
                 #respond hello
@@ -119,9 +123,11 @@ class bot():
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
-                            self.send_message(channel, str(rand.randint(1,6)))
+                            diceroll=rand.randint(1,6)
+                            self.send_message(channel, f"You rolled a {diceroll}")
                         elif message.startswith("!slap"):
-                           self.send_message(channel,"slaps"+rand.choice(self.user_list))
+                            randuser=rand.choice(self.user_list)
+                            self.send_message(channel,"slaps"+randuser+"with a large trout \n")
                            
                            
                         """   #respond to private messagees
@@ -151,10 +157,15 @@ class bot_replies():
     #function to handle random replies when in a channel
     def random_replies():
        randlist=["hello",
-                 "whoami",
-                 "how are you",
-                 "what is your name",
-                 "what is your age"
+                    "how are you",
+                    "whoaaa",
+                    "I am a bot",
+                    "hush",
+                    "cold",
+                    "i get you",
+                    "i understand",
+                    "will let you know",
+                    
                  ]
        msg=rand.choice(randlist)
        print(msg)
