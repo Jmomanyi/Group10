@@ -137,7 +137,7 @@ class bot():
                     bot.remove_user(user)
                     print("USER LEFT: "+user)
                
-                elif   message.find("PRIVMSG"+self.name+":")!=-1:
+                elif   data.find("PRIVMSG"+self.name+":")!=-1:
                   print("I was mentioned")
                   recv=self.get_user(data)
                   
