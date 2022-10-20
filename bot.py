@@ -140,9 +140,8 @@ class bot():
                 elif   data.find("PRIVMSG"+self.name+":")!=-1:
                   print("I was mentioned")
                   recv=self.get_user(data)
-                  
-                  msg_to_send=rand.choice(list(open("facts.txt")))
-                  self.send_message(recv,msg_to_send)    
+                  bot_replies.privatemsg(self,recv)
+                   
                 
                         
                #respond to messages in channel
@@ -211,7 +210,7 @@ class bot_replies():
     
             
     def privatemsg(self,usr):
-     self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
+         self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
     
        
 if __name__=="__main__":
