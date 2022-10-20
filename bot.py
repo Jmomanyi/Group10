@@ -95,16 +95,10 @@ class bot():
         print(self.user_list)
         return self.user_list
     
-    def timeofday():
-        time=t.strftime("%H")
-        if int(time) < 12:
-            return "morning"
-        elif int(time) >= 12 and int(time) < 17:
-            return "afternoon"
-        elif int(time) >= 17 and int(time) < 20:
-            return "evening"
-        else:
-           return "night"    
+    def timeofday(self):
+       time=os.popen("date").read()
+       print(time)
+       return time
     
     def main(self):
                     
@@ -152,8 +146,7 @@ class bot():
                     if message.startswith("!"):
                         if message.startswith("!hello"):
                             who=self.get_user(data)
-                            
-                            self.sock.send(bytes("PRIVMSG "+self.channel+" :Hello "+who+" good "+bot.timeofday()+"!\r\n", "UTF-8"))
+                            self.send_message(self.channel, "Hello "+who+"it is"+" "+self.timeofday())
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
