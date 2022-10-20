@@ -137,7 +137,12 @@ class bot():
                     bot.remove_user(user)
                     print("USER LEFT: "+user)
                
-               
+                elif   message.find("PRIVMSG"+self.name+":")!=-1:
+                  print("I was mentioned")
+                  recv=self.get_user(data)
+                  
+                  msg_to_send=rand.choice(list(open("facts.txt")))
+                  self.send_message(recv,msg_to_send)    
                 
                         
                #respond to messages in channel
@@ -165,12 +170,7 @@ class bot():
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                    
-                        elif   message.find("PRIVMSG"+self.name+":")!=-1:
-                                  print("I was mentioned")
-                                  recv=self.get_user(data)
-                  
-                                  msg_to_send=rand.choice(list(open("facts.txt")))
-                                  self.send_message(recv,msg_to_send)    
+                        
                         else:
                             self.send_message(channel, "Command not recognised")          
                                   
