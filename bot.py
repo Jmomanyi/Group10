@@ -75,9 +75,13 @@ class bot():
       
       #get the name of the user who messaged           
     def  get_user(self,data):
-        user=data.split()
-        user=user[0].strip(":!,@")
-        return user
+        msg=data.split('\n\r')
+        ms=msg[0].split(":")
+        us=ms[1]
+        if (self.name in ms[1])!=-1:
+            if ms[1] != "":
+              whotosend=str(ms[1].split('!')[0])
+        return whotosend      
     
     #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
     #add the user to the list of users
@@ -162,19 +166,12 @@ class bot():
                 #roll a dice
                 #slap a user
                 if data.find("PRIVMSG")!=-1:
-                    msg=data.split('\n\r')
-                    ms=msg[0].split(":")
-                    us=ms[1]
-                    if (self.name in ms[1])!=-1:
-                       if ms[1] != "":
-                              whotosend=str(ms[1].split('!')[0])
-                              messagetosend=rand.choice(list(open("facts.txt")))
-                              print(whotosend)
-                              self.sock.send(bytes("PRIVMSG "+whotosend+" :"+messagetosend+"\r\n", "UTF-8"))
+                    whotosend=self.get_user(data)    
+                    messagetosend=rand.choice(list(open("facts.txt")))
+                    print(whotosend)
+                    self.sock.send(bytes("PRIVMSG "+whotosend+" :"+messagetosend+"\r\n", "UTF-8"))
                      #else try sending message if failed print error and close socket     
-                    else:
-                           print("Error: message is empty")
-                           sys.exit(-3)
+                 
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
                     print(message)
                     if message.startswith("!"):
