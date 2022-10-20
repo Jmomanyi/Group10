@@ -152,7 +152,7 @@ class bot():
                     if message.startswith("!"):
                         if message.startswith("!hello"):
                             who=self.get_user(data)
-                            time=bot.timeofday()
+                            time=self.timeofday()
                             self.send_message(channel, f"Hello {who}, good {time}!")
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
