@@ -153,7 +153,7 @@ class bot():
                         if message.startswith("!hello"):
                             who=self.get_user(data)
                             
-                            self.send_message(channel, "Hello "+who+" good "+bot.timeofday())
+                            self.sock.send(bytes("PRIVMSG "+self.channel+" :Hello "+who+" good "+bot.timeofday()+"!\r\n", "UTF-8"))
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
