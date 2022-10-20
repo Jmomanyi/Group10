@@ -129,7 +129,9 @@ class bot():
                     user=self.get_user(data)
                     self.add_user(user)
                     print(user+" HAS JOINED CHANNEL.")
+                    
                     print("*"*20)
+                    print("USERLIST")
                     bot.get_user_list()
                     print("*"*20)
 
@@ -139,6 +141,7 @@ class bot():
                     bot.remove_user(user)
                     print("USER LEFT: "+user)
                     print("*"*20)
+                    print("USERLIST")
                     bot.get_user_list()
                     print("*"*20)
                 """""
