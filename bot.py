@@ -141,11 +141,11 @@ class bot():
                     print("*"*20)
                     bot.get_user_list()
                     print("*"*20)
-               
+                """""
                 elif data.find("PRIVMSG"+self.name+":")!=-1:
                     print("i was mentioned")
                     bot_replies.privatemsg(data)
-                    """""
+                    
                   print("I was mentioned")
                   recv=self.get_user(data)
                   bot_replies.privatemsg(recv)
@@ -158,6 +158,9 @@ class bot():
                 #roll a dice
                 #slap a user
                 if data.find("PRIVMSG")!=-1:
+                    if self.name in data:
+                        print("I was mentioned")
+                        bot_replies.privatemsg(data)
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
                     print(message)
                     if message.startswith("!"):
@@ -176,10 +179,7 @@ class bot():
                                 self.send_message(channel, f"Can't slap myself")
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
-                              
-                        elif (self.name in message[0]):
-                             bot_replies.privatemsg(data)        
-                         
+                               
                         else:
                             self.send_message(channel, "Command not recognised")          
                                   
