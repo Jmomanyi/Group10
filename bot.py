@@ -144,7 +144,7 @@ class bot():
                 elif   data.find("PRIVMSG"+self.name+":")!=-1:
                   print("I was mentioned")
                   recv=self.get_user(data)
-                  bot_replies.privatemsg(self,recv)
+                  bot_replies.privatemsg(recv)
                    
                 
                         
@@ -215,8 +215,10 @@ class bot_replies():
             
     def privatemsg(self,usr):
         if usr!="":
-         self.send_message(usr,"Hello "+usr)
          self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
+        else:
+            print("Error: user is empty")
+            sys.exit(-2)
     
        
 if __name__=="__main__":
