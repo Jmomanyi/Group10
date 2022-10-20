@@ -3,6 +3,7 @@ import socket as s #import socket
 import sys #import sys
 #import random 
 import random as rand
+import time
 #class bot 
 
 class bot():
@@ -44,7 +45,10 @@ class bot():
             except s.error as e:
                 print("Error: "+str(e)+"unable to join channel")
                 s.close()
-        
+    def  get_user(self,data):
+        user=data.split()
+        user=user[0].strip(":!,@")
+        return user
     def message_handler(self,):
         #the bot is the only one in the channel at start
         
@@ -55,37 +59,9 @@ class bot():
         if data.find("PING")!=-1:
           self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
           
-          #if the message is a user joining the channel, add them to the user list
-        elif data.find("JOIN")!=-1:
-         usr=data.split()
-         usr=usr[0].strip(":")
-         self.user_list.append(usr)
-         print("LIST OF USERS ")
-         print(self.user_list)
-         print("*"*50)
-         
-         
-         
-         #if the message is a user leaving the channel, remove them from the user list
-        elif data.find('!QUIT')!=-1:
-            user=data.split()
-            user=user[0].strip(":")
-            self.user_list.remove(user)
-            print("LIST OF USERS ")
-            print(self.user_list)
-            print("*"*50)
-            print(f"{user} has left the channel")
-        
-         #if the message is a private message find the name of the user and reply.
-        elif data.find("PRIVMSG")!=-1:
-          message=data.split()
-          source =message[0].strip(":")
-          source=source.strip("!")
-          content=' '.join(message[3:]).strip(":")
-         #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
-          
-          
-          #print(f"source: {source} content: {content}")
+        if self.name in data:
+          source=bot.get_user(data)
+          print(f"source: {source} content: {data}")
           msg=rand.choice(list(open("facts.txt")))
           print(msg)
           self.sock.send(bytes("PRIVMSG "+source+" :"+msg+"\r\n", "UTF-8"))
