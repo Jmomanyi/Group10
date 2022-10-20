@@ -162,8 +162,14 @@ class bot():
                 #slap a user
                 if data.find("PRIVMSG")!=-1:
                     if (self.name in data)!=-1:
-                        print("I was mentioned")
-                        bot_replies.privatemsg(data)
+                       if data != "":
+                              whosent=bot.get_user(msg)
+                              messagetosend=rand.choice(open(list("facts.txt")).readline())
+                              self.sock.send(bytes("PRIVMSG "+whosent+" :"+messagetosend+"\r\n", "UTF-8"))
+                     #else try sending message if failed print error and close socket     
+                    else:
+                           print("Error: message is empty")
+                           sys.exit(-3)
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
                     print(message)
                     if message.startswith("!"):
