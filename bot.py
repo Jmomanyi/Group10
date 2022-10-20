@@ -141,11 +141,14 @@ class bot():
                     bot.get_user_list()
                     print("*"*20)
                
-                elif   data.find("PRIVMSG"+self.name+":")!=-1:
+                elif data.find("PRIVMSG"+self.name+":")!=-1:
+                    print("i was mentioned")
+                    bot_replies.privatemsg(data)
+                    """""
                   print("I was mentioned")
                   recv=self.get_user(data)
                   bot_replies.privatemsg(recv)
-                   
+                   """""
                 
                         
                #respond to messages in channel
@@ -213,12 +216,18 @@ class bot_replies():
      
     
             
-    def privatemsg(self,usr):
-        if usr!="":
-         self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
+    def privatemsg(self,msg):
+        
+        if msg != "":
+              whosent=bot.get_user(msg)
+              messagetosend=rand.choice(open(list("facts.txt")).readline())
+              self.sock.send(bytes("PRIVMSG "+whosent+" :"+messagetosend+"\r\n", "UTF-8"))
+         #else try sending message if failed print error and close socket     
         else:
-            print("Error: user is empty")
-            sys.exit(-2)
+             print("Error: message is empty")
+             sys.exit(-3)
+             
+       
     
        
 if __name__=="__main__":
