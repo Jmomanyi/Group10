@@ -164,13 +164,15 @@ class bot():
                                 self.send_message(channel, f"Can't slap myself")
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
+                                   
                         elif   message.startswith("bot_peter"):  
                                   print("I was mentioned")
                                   recv=self.get_user(data)
                   
                                   msg_to_send=rand.choice(list(open("facts.txt")))
                                   self.send_message(recv,msg_to_send)    
-                              
+                        else:   
+                            bot_replies.random_replies()
                             
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
