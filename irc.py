@@ -125,8 +125,9 @@ class client(Thread):
                                 found = True                 
                         channel = messageParsed[1]
                         #If channel not found, create channel with name
-                        if(not found):
+                        if(found !=True):
                             channel_list.append(channel)
+                            print("Channel " + channel + " created")
                             found = True
 
                         #If channel found, send reply codes and broadcast to everyone in channel
