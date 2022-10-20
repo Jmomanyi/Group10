@@ -176,8 +176,10 @@ class bot():
                                 self.send_message(channel, f"Can't slap myself")
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
-                                   
-                        
+                              
+                        elif (self.name in message[0]):
+                             bot_replies.privatemsg(data)        
+                         
                         else:
                             self.send_message(channel, "Command not recognised")          
                                   
