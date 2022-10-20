@@ -165,7 +165,7 @@ class bot():
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                    
-                        elif   message.startswith("bot_peter"):  
+                        elif   message.find("PRIVMSG"+self.name+":")!=-1:
                                   print("I was mentioned")
                                   recv=self.get_user(data)
                   
