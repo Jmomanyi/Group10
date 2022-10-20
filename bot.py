@@ -93,9 +93,10 @@ class bot():
 
 #get the uselist
     def get_user_list(self):
-        self.sock.send(bytes("NAMES "+self.channel+"\r\n","UTF-8"))
-        print(self.user_list)
-        return self.user_list
+        for user in self.user_list:
+           user_list=[]
+           user_list.append(user)
+           print(user_list)
     
 
        
@@ -117,9 +118,7 @@ class bot():
                     #
                     print("*"*20)
                     print("USERLIST")
-                    
-                    print(self.user_list)
-                    
+                    bot.get_user_list()  
                     print("*"*20)
 
 
@@ -129,13 +128,18 @@ class bot():
                     user=self.get_user(data)
                     self.add_user(user)
                     print(user+" HAS JOINED CHANNEL.")
+                    print("*"*20)
                     bot.get_user_list()
+                    print("*"*20)
 
               #Keep track of u#Keep track of users in channel who PART
                 elif data.find("QUIT")!=-1:
                     user=self.get_user(data)
                     bot.remove_user(user)
                     print("USER LEFT: "+user)
+                    print("*"*20)
+                    bot.get_user_list()
+                    print("*"*20)
                
                 elif   data.find("PRIVMSG"+self.name+":")!=-1:
                   print("I was mentioned")
@@ -210,6 +214,8 @@ class bot_replies():
     
             
     def privatemsg(self,usr):
+        if usr!="":
+         self.send_message(usr,"Hello "+usr)
          self.sock.send(bytes ( "PRIVMSG "+usr+""+rand.choice(list(open("facts.txt")))+"\r\n", "UTF-8"))
     
        
