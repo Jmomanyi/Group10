@@ -80,12 +80,12 @@ class bot():
       #get the name of the user who messaged           
     def  get_user(self,data):
         msg=data.split('\n\r')#remove extra bits
-        ms=msg[0].split(":")#split to obtain the name of the user
-        us=ms[1]#the name of the user is in the seond index of the mssg received
-        if (self.name in ms[1])!=-1:
-            if ms[1] != "":#if the name is not empty
+        usr=msg[0].split(":")#split to obtain the name of the user
+        us=usr[1]#the name of the user is in the seond index of the mssg received
+        if (self.name in usr[1])!=-1:
+            if usr[1] != "":#if the name is not empty
             #get the name of the user who messaged and convert to string
-              whotosend=str(ms[1].split('!')[0])
+              whotosend=str(usr[1].split('!')[0])
               #return the name of the user
         return whotosend      
     
@@ -146,6 +146,7 @@ class bot():
                     self.add_user(user)
                     print(user+" HAS JOINED CHANNEL.")
                     
+                    #print user list
                     print("*"*20)
                     print("USERLIST")
                     bot.get_user_list()
@@ -156,6 +157,8 @@ class bot():
                     user=self.get_user(data)
                     bot.remove_user(user)
                     print("USER LEFT: "+user)
+                    
+                    #print updated userlist
                     print("*"*20)
                     print("USERLIST")
                     bot.get_user_list()
@@ -184,19 +187,28 @@ class bot():
                         if message.startswith("!hello"):
                             who=self.get_user(data)#get the name of the user who messaged
                             time=os.popen("date").read()#get the time
-                            self.send_message(self.channel, "Hello "+who+". It is "+time)#send message to channel
                             
+                            #if a message starts with help
                         elif message.startswith("!help"):
+                            #send list of commands
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
+                            #if a message starts with roll
                         elif message.startswith("!roll"):
+                            #choose a random number between 1 and 6
                             diceroll=rand.randint(1,6)
+                            #send the random number
                             self.send_message(channel, f"You rolled a {diceroll}")
+                            #if a message starts with slap
                         elif message.startswith("!slap"):
+                            #get a random user from the list of users in the channel
                             randuser=rand.choice(self.user_list)
-                            
+                            #while the random user is the bot
                             while randuser==self.name:
+                                #get another random user
                                 randuser=rand.choice(self.user_list)
+                                #else
                             else:     
+                               #slap a random user with a trout
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                
                                
