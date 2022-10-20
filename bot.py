@@ -1,13 +1,11 @@
 #!/bin/python3
 
-# imports
 
+import socket as s#import socket library
+import sys #imports sys library
+import os #imports os library
+import random as rand #imports random library
 
-import socket as s
-import sys
-import os
-import random as rand
-import time as t
  
 #main class for the bot
 class bot():
@@ -73,16 +71,19 @@ class bot():
             except s.error as e:
                 print("Error: "+str(e)+"unable to send message")
                 s.close()     
-                   
+      
+      #get the name of the user who messaged           
     def  get_user(self,data):
         user=data.split()
         user=user[0].strip(":!,@")
         return user
     
+    #add the user to the list of users
     def add_user(self,user):
         self.user_list.append(user)
         return self.user_list
     
+    #remve the user from list if the user leaves the channel
     def remove_user(self,user):
         if user not in self.user_list:
             print("User not in list")
@@ -90,6 +91,7 @@ class bot():
             self.user_list.remove(user)
             return self.user_list
 
+#get the uselist
     def get_user_list(self):
         self.sock.send(bytes("NAMES "+self.channel+"\r\n","UTF-8"))
         print(self.user_list)
@@ -135,6 +137,14 @@ class bot():
                     bot.remove_user(user)
                     print("USER LEFT: "+user)
                
+               
+                if data.__contains__("PRIVMSG"+self.name):
+                            
+                  print("I was mentioned")
+                  recv=self.get_user(data)
+                  
+                  msg_to_send=rand.choice(list(open("facts.txt")))
+                  self.send_message(recv,msg_to_send)
                #respond to messages in channel
                 #respond hello
                 #provide help
@@ -159,16 +169,7 @@ class bot():
                                 self.send_message(channel, f"Can't slap myself")
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
-                           
-                           
-                        
-                        elif data.startswith("PRIVMSG"+self.name):
                             
-                            print("I was mentioned")
-                            recv=str(message[1].split('!')[0])
-                            msg_to_send=rand.choice(list(open("facts.txt")))
-                            self.send_message(recv,msg_to_send)
-                   
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
                 s.close()
