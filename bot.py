@@ -169,7 +169,7 @@ class bot():
                        if ms[1] != "":
                               whotosend=str(ms[1].split('!')[0])
                               messagetosend=rand.choice(list(open("facts.txt")))
-                              print(messagetosend)
+                              print(whotosend)
                               self.sock.send(bytes("PRIVMSG "+whotosend+" :"+messagetosend+"\r\n", "UTF-8"))
                      #else try sending message if failed print error and close socket     
                     else:
