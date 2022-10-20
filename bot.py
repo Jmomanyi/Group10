@@ -56,7 +56,27 @@ class bot():
                 s.close()
                 
       
-  
+    #send message function
+    # receives the socket, destination and message as inputs then send the message to the required channel or destination
+    def send_message(self,dest, message):
+        #if destination is empty print error and exit
+        if dest=="":
+            print("Error: destination is empty")
+            sys.exit(-2)
+            #if message is empty print error and exit
+        if message=="":
+                print("Error: message is empty")
+                sys.exit(-3)
+                #else try sending message if failed print error and close socket
+        else:
+            try:
+                #send message
+                self.sock.send(bytes("PRIVMSG "+dest+" :"+message+"\r\n", "UTF-8"))
+                #print error and close socket
+            except s.error as e:
+                print("Error: "+str(e)+"unable to send message")
+                s.close()     
+      
       #get the name of the user who messaged           
     def  get_user(self,data):
         msg=data.split('\n\r')#remove extra bits
@@ -152,7 +172,7 @@ class bot():
                     whotosend=self.get_user(data)    
                     messagetosend=rand.choice(list(open("facts.txt")))
                     print(whotosend)
-                    send_message(whotosend,messagetosend)
+                    self.send_message(whotosend,messagetosend)
                     
                      #else try sending message if failed print error and close socket     
                  
@@ -164,27 +184,27 @@ class bot():
                         if message.startswith("!hello"):
                             who=self.get_user(data)#get the name of the user who messaged
                             time=os.popen("date").read()#get the time
-                            send_message(self.channel, "Hello "+who+". It is "+time)#send message to channel
+                            self.send_message(self.channel, "Hello "+who+". It is "+time)#send message to channel
                             
                         elif message.startswith("!help"):
-                            send_message(channel, "Commands: !hello, !help, !roll, !slap")
+                            self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
                             diceroll=rand.randint(1,6)
-                            send_message(channel, f"You rolled a {diceroll}")
+                            self.send_message(channel, f"You rolled a {diceroll}")
                         elif message.startswith("!slap"):
                             randuser=rand.choice(self.user_list)
                             
                             while randuser==self.name:
                                 randuser=rand.choice(self.user_list)
                             else:     
-                              send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
+                              self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                
                                
                                   
                         else:   
                             #reply random replies
                           bot_replies.random_replies()
-                          bot_replies.send_message(channel, "I don't understand")      
+              #              
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
                 s.close()
@@ -214,29 +234,9 @@ class bot_replies():
                  ]
        msg=rand.choice(randlist)#get a random message from the list
        #send the message to the channel
-       send_message(channel,msg)
+       bot.send_message(channel,msg)
      
-  #send message function
-# receives the socket, destination and message as inputs then send the message to the required channel or destination
-def send_message(self,dest, message):
-    #if destination is empty print error and exit
-    if dest=="":
-        print("Error: destination is empty")
-        sys.exit(-2)
-        #if message is empty print error and exit
-    if message=="":
-            print("Error: message is empty")
-            sys.exit(-3)
-            #else try sending message if failed print error and close socket
-    else:
-        try:
-            #send message
-            self.sock.send(bytes("PRIVMSG "+dest+" :"+message+"\r\n", "UTF-8"))
-            #print error and close socket
-        except s.error as e:
-            print("Error: "+str(e)+"unable to send message")
-            s.close()     
-      
+
        
     
 #main function       
