@@ -162,12 +162,15 @@ class bot():
                 #roll a dice
                 #slap a user
                 if data.find("PRIVMSG")!=-1:
-                    if (self.name in data)!=-1:
-                       if data != "":
-                              whosent=bot.get_user(data)
+                    msg=data.split('\n\r')
+                    ms=msg[0].split(":")
+                    us=ms[1]
+                    if (self.name in ms[1])!=-1:
+                       if ms[1] != "":
+                              whotosend=str(ms[1].split('!')[0])
                               messagetosend=rand.choice(list(open("facts.txt")))
                               print(messagetosend)
-                              self.sock.send(bytes("PRIVMSG "+whosent+" :"+messagetosend+"\r\n", "UTF-8"))
+                              self.sock.send(bytes("PRIVMSG "+whotosend+" :"+messagetosend+"\r\n", "UTF-8"))
                      #else try sending message if failed print error and close socket     
                     else:
                            print("Error: message is empty")
