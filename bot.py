@@ -16,10 +16,10 @@ class bot():
         self.name=name
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
-        self.host_ip=s.gethostbyname(s.gethostname())
-        self.user_list=[self.name]
-        self.connect_to_server()
-        self.join_channel(self.channel)
+        self.host_ip=s.gethostbyname(s.gethostname())#get the host ip
+        self.user_list=[] #list of users in the channel
+        self.connect_to_server()#call connect to server function
+        self.join_channel(self.channel)#call join channel function
         #conect to server
     def connect_to_server(self):
         #try connecting to server and if it fails, print error and exit
@@ -31,6 +31,7 @@ class bot():
             self.sock.send(bytes("USER "+self.nickname+" "+self.nickname+" "+self.nickname+" :"+self.nickname+"\r\n", "UTF-8"))
             self.sock.send(bytes("NICK "+self.name+"\r\n", "UTF-8"))
         except s.error as e:
+            #print error and exit
             print(f"Error: {str(e)} unable to connect to server")
             sys.exit()
             
@@ -44,45 +45,31 @@ class bot():
             
             #else try joining channel if failed print error and close socket
         else:
-            try:
+            try:#join channel
                 self.sock.send(bytes("JOIN "+channel_name+"\r\n", "UTF-8"))
-                
+                #identify itself to the channel
                 self.sock.send(bytes("PRIVMSG "+channel_name+" :Hello, I am a"+self.nickname+" !\r\n", "UTF-8"))
                 print("joined channel "+channel_name)
+            #print error and close socket
             except s.error as e:
                 print("Error: "+str(e)+"unable to join channel")
                 s.close()
                 
       
-    #send message function
-    # receives the socket, destination and message as inputs then send the message to the required channel or destination
-    def send_message(self,dest, message):
-        #if destination is empty print error and exit
-        if dest=="":
-            print("Error: destination is empty")
-            sys.exit(-2)
-            #if message is empty print error and exit
-        if message=="":
-                print("Error: message is empty")
-                sys.exit(-3)
-                #else try sending message if failed print error and close socket
-        else:
-            try:
-                self.sock.send(bytes("PRIVMSG "+dest+" :"+message+"\r\n", "UTF-8"))
-            except s.error as e:
-                print("Error: "+str(e)+"unable to send message")
-                s.close()     
-      
+  
       #get the name of the user who messaged           
     def  get_user(self,data):
-        msg=data.split('\n\r')
-        ms=msg[0].split(":")
-        us=ms[1]
+        msg=data.split('\n\r')#remove extra bits
+        ms=msg[0].split(":")#split to obtain the name of the user
+        us=ms[1]#the name of the user is in the seond index of the mssg received
         if (self.name in ms[1])!=-1:
-            if ms[1] != "":
+            if ms[1] != "":#if the name is not empty
+            #get the name of the user who messaged and convert to string
               whotosend=str(ms[1].split('!')[0])
+              #return the name of the user
         return whotosend      
     
+    #got this from this website
     #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
     #add the user to the list of users
     def add_user(self,user):
@@ -90,6 +77,7 @@ class bot():
         return self.user_list
     
     #remve the user from list if the user leaves the channel
+#https://note.nkmk.me/en/python-list-clear-pop-remove-del/#:~:text=In%20Python%2C%20use%20list%20methods,with%20an%20index%20or%20slice.
     def remove_user(self,user):
         if user not in self.user_list:
             print("User not in list")
@@ -106,7 +94,7 @@ class bot():
     
 
        
-    
+    #https://realpython.com/python-sockets/
     def main(self):
                     
                 
@@ -152,15 +140,7 @@ class bot():
                     print("USERLIST")
                     bot.get_user_list()
                     print("*"*20)
-                """""
-                elif data.find("PRIVMSG"+self.name+":")!=-1:
-                    print("i was mentioned")
-                    bot_replies.privatemsg(data)
-                    
-                  print("I was mentioned")
-                  recv=self.get_user(data)
-                  bot_replies.privatemsg(recv)
-                   """""
+                
                 
                         
                #respond to messages in channel
@@ -172,35 +152,39 @@ class bot():
                     whotosend=self.get_user(data)    
                     messagetosend=rand.choice(list(open("facts.txt")))
                     print(whotosend)
-                    self.send_message(whotosend,messagetosend)
+                    send_message(whotosend,messagetosend)
                     
                      #else try sending message if failed print error and close socket     
                  
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
                     print(message)
+                    #if message starts with !
                     if message.startswith("!"):
+                        #if a message starts with hello
                         if message.startswith("!hello"):
-                            who=self.get_user(data)
-                            time=os.popen("date").read()
-                            self.send_message(self.channel, "Hello "+who+". It is "+time)
+                            who=self.get_user(data)#get the name of the user who messaged
+                            time=os.popen("date").read()#get the time
+                            send_message(self.channel, "Hello "+who+". It is "+time)#send message to channel
+                            
                         elif message.startswith("!help"):
-                            self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
+                            send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
                             diceroll=rand.randint(1,6)
-                            self.send_message(channel, f"You rolled a {diceroll}")
+                            send_message(channel, f"You rolled a {diceroll}")
                         elif message.startswith("!slap"):
                             randuser=rand.choice(self.user_list)
                             
                             while randuser==self.name:
                                 randuser=rand.choice(self.user_list)
                             else:     
-                              self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
+                              send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                
                                
                                   
                         else:   
+                            #reply random replies
                           bot_replies.random_replies()
-                            
+                          bot_replies.send_message(channel, "I don't understand")      
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
                 s.close()
@@ -215,7 +199,7 @@ class bot_replies():
         self.server=server
         self.channel=channel
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
-    #function to handle random replies when in a channel
+    #function to handle random replies when its not a command
     def random_replies():
        randlist=["hello",
                     "how are you",
@@ -228,27 +212,36 @@ class bot_replies():
                     "will let you know",
                     
                  ]
-       msg=rand.choice(randlist)
-       print(msg)
-       bot.send_message(channel,msg)
+       msg=rand.choice(randlist)#get a random message from the list
+       #send the message to the channel
+       send_message(channel,msg)
      
-    
-            
-    def privatemsg(self,msg):
-        
-        if msg != "":
-              whosent=bot.get_user(msg)
-              messagetosend=rand.choice(open(list("facts.txt")).readline())
-              self.sock.send(bytes("PRIVMSG "+whosent+" :"+messagetosend+"\r\n", "UTF-8"))
-         #else try sending message if failed print error and close socket     
-        else:
-             print("Error: message is empty")
-             sys.exit(-3)
-             
+  #send message function
+# receives the socket, destination and message as inputs then send the message to the required channel or destination
+def send_message(self,dest, message):
+    #if destination is empty print error and exit
+    if dest=="":
+        print("Error: destination is empty")
+        sys.exit(-2)
+        #if message is empty print error and exit
+    if message=="":
+            print("Error: message is empty")
+            sys.exit(-3)
+            #else try sending message if failed print error and close socket
+    else:
+        try:
+            #send message
+            self.sock.send(bytes("PRIVMSG "+dest+" :"+message+"\r\n", "UTF-8"))
+            #print error and close socket
+        except s.error as e:
+            print("Error: "+str(e)+"unable to send message")
+            s.close()     
+      
        
     
-       
+#main function       
 if __name__=="__main__":
+ 
     server="127.0.0.1"
     channel="#BOTS"
     name="bot_peter"
