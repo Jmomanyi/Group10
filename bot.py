@@ -171,7 +171,10 @@ class bot():
                   
                                   msg_to_send=rand.choice(list(open("facts.txt")))
                                   self.send_message(recv,msg_to_send)    
-                        else:   
+                        else:
+                            self.send_message(channel, "Command not recognised")          
+                                  
+                    else:   
                             bot_replies.random_replies()
                             
             except s.error as e:
