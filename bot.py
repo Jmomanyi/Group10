@@ -7,7 +7,8 @@ import socket as s
 import sys
 import os
 import random as rand
-
+import time as t
+ 
 #main class for the bot
 class bot():
     #instanciate variables
@@ -27,6 +28,8 @@ class bot():
         try:
             self.sock.connect((self.server, 6667))
             print(f"connected to {self.host_ip}")
+            
+            #identify itself
             self.sock.send(bytes("USER "+self.nickname+" "+self.nickname+" "+self.nickname+" :"+self.nickname+"\r\n", "UTF-8"))
             self.sock.send(bytes("NICK "+self.name+"\r\n", "UTF-8"))
         except s.error as e:
@@ -91,7 +94,17 @@ class bot():
         self.sock.send(bytes("NAMES "+self.channel+"\r\n","UTF-8"))
         print(self.user_list)
         return self.user_list
-
+    
+    def timeofday():
+        time=t.strftime("%H")
+        if int(time) < 12:
+            return "morning"
+        elif int(time) >= 12 and int(time) < 17:
+            return "afternoon"
+        elif int(time) >= 17 and int(time) < 20:
+            return "evening"
+        else:
+           return "night"    
     
     def main(self):
                     
@@ -140,7 +153,8 @@ class bot():
                     print(message)
                     if message.startswith("!"):
                         if message.startswith("!hello"):
-                            self.send_message(channel, "Hello")
+                            who=self.get_user(data)
+                            self.send_message(channel, f"Hello {who}, good {bot.timeofday()}!")
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
@@ -151,7 +165,7 @@ class bot():
                             if randuser==self.name:
                                 self.send_message(channel, f"Can't slap myself")
                             else:     
-                              self.send_message(channel,"slaps"+""+randuser+""+"with a large trout \n")
+                              self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                            
                            
                         
