@@ -108,7 +108,7 @@ class bot():
 #get the uselist
     def get_user_list(self):
         for user in self.user_list:
-           user_list=[]
+           user_list=[self.name]
            user_list.append(user)
            print(user_list)
     
