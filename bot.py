@@ -100,7 +100,7 @@ class bot():
     
     def main(self):
                     
-                      
+                
         #while loop to handle connection, sending of messages and receiving of messages
         while True:
             
@@ -108,12 +108,14 @@ class bot():
             #try receiving messages from server if failed print error and close socket
             try:
                 data=self.sock.recv(1024).decode("UTF-8")
-                
+                #receives ping from the server and sends pong back to keep connection alive
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
+                    
+                    #
                     print("*"*20)
                     print("USERLIST")
-                    self.user_list.pop(0)
+                    
                     print(self.user_list)
                     
                     print("*"*20)
@@ -145,7 +147,7 @@ class bot():
                         if message.startswith("!hello"):
                             who=self.get_user(data)
                             time=os.popen("date").read()
-                            self.send_message(self.channel, "Hello "+who+"it is"+time)
+                            self.send_message(self.channel, "Hello "+who+". It is "+time)
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
@@ -212,6 +214,7 @@ if __name__=="__main__":
     
     print("#"*50)
     bot=bot(server, channel, name, nickname)
+
     bot.main()
 
 
