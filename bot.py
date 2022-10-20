@@ -121,10 +121,8 @@ class bot():
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     print("*"*20)
                     print("USERLIST")
-                    self.user_list=self.user_list.pop(0)
-                    for i in range(len(self.user_list)):
-                        for x in self.user_list:
-                         print(x[i], end =' ')
+                    self.user_list.pop(0)
+                    print(self.user_list)
                     
                     print("*"*20)
 
@@ -154,7 +152,8 @@ class bot():
                     if message.startswith("!"):
                         if message.startswith("!hello"):
                             who=self.get_user(data)
-                            self.send_message(channel, f"Hello {who}, good {bot.timeofday()}!")
+                            time=bot.timeofday()
+                            self.send_message(channel, f"Hello {who}, good {time}!")
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
