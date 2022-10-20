@@ -95,10 +95,8 @@ class bot():
         print(self.user_list)
         return self.user_list
     
-    def timeofday(self):
-       time=os.popen("date").read()
-       print(time)
-       return time
+
+       
     
     def main(self):
                     
@@ -146,7 +144,8 @@ class bot():
                     if message.startswith("!"):
                         if message.startswith("!hello"):
                             who=self.get_user(data)
-                            self.send_message(self.channel, "Hello "+who+"it is"+" "+self.timeofday())
+                            time=os.popen("date").read()
+                            self.send_message(self.channel, "Hello "+who+"it is"+time)
                         elif message.startswith("!help"):
                             self.send_message(channel, "Commands: !hello, !help, !roll, !slap")
                         elif message.startswith("!roll"):
