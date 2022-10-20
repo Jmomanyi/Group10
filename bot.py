@@ -46,8 +46,9 @@ class bot():
         else:
             try:
                 self.sock.send(bytes("JOIN "+channel_name+"\r\n", "UTF-8"))
-                print("joined channel "+channel_name)
+                
                 self.sock.send(bytes("PRIVMSG "+channel_name+" :Hello, I am a"+self.nickname+" !\r\n", "UTF-8"))
+                print("joined channel "+channel_name)
             except s.error as e:
                 print("Error: "+str(e)+"unable to join channel")
                 s.close()
