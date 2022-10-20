@@ -79,6 +79,7 @@ class bot():
         user=user[0].strip(":!,@")
         return user
     
+    #https://www.w3schools.com/python/trypython.asp?filename=demo_list_append
     #add the user to the list of users
     def add_user(self,user):
         self.user_list.append(user)
@@ -165,6 +166,7 @@ class bot():
                        if data != "":
                               whosent=bot.get_user(data)
                               messagetosend=rand.choice(list(open("facts.txt")))
+                              print(messagetosend)
                               self.sock.send(bytes("PRIVMSG "+whosent+" :"+messagetosend+"\r\n", "UTF-8"))
                      #else try sending message if failed print error and close socket     
                     else:
