@@ -164,7 +164,7 @@ class bot():
                     if (self.name in data)!=-1:
                        if data != "":
                               whosent=bot.get_user(data)
-                              messagetosend=rand.choice(open(list("facts.txt")).readline())
+                              messagetosend=rand.choice(list(open("facts.txt")))
                               self.sock.send(bytes("PRIVMSG "+whosent+" :"+messagetosend+"\r\n", "UTF-8"))
                      #else try sending message if failed print error and close socket     
                     else:
