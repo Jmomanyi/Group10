@@ -198,8 +198,8 @@ class bot():
                                
                                
                                   
-                    else:   
-                        bot_replies.random_replies()
+                        else:   
+                          bot_replies.random_replies()
                             
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
