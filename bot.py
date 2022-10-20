@@ -233,7 +233,7 @@ class bot_replies():
        
 if __name__=="__main__":
     server="127.0.0.1"
-    channel="#Test"
+    channel="#BOTS"
     name="bot_peter"
     nickname="ruthlessbot"
     
