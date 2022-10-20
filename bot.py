@@ -17,7 +17,7 @@ class bot():
         self.nickname=nickname
         self.sock=s.socket(s.AF_INET, s.SOCK_STREAM)
         self.host_ip=s.gethostbyname(s.gethostname())#get the host ip
-        self.user_list=[] #list of users in the channel
+        self.user_list=[self.name] #list of users in the channel
         self.connect_to_server()#call connect to server function
         self.join_channel(self.channel)#call join channel function
         #conect to server
@@ -108,7 +108,7 @@ class bot():
 #get the uselist
     def get_user_list(self):
         for user in self.user_list:
-           user_list=[self.name]
+           user_list=[]
            user_list.append(user)
            print(user_list)
     
