@@ -138,13 +138,8 @@ class bot():
                     print("USER LEFT: "+user)
                
                
-                if data.__contains__("PRIVMSG"+self.name):
-                            
-                  print("I was mentioned")
-                  recv=self.get_user(data)
-                  
-                  msg_to_send=rand.choice(list(open("facts.txt")))
-                  self.send_message(recv,msg_to_send)
+                
+                        
                #respond to messages in channel
                 #respond hello
                 #provide help
@@ -169,6 +164,13 @@ class bot():
                                 self.send_message(channel, f"Can't slap myself")
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
+                        elif   message.__contains__(self.name):  
+                                  print("I was mentioned")
+                                  recv=self.get_user(data)
+                  
+                                  msg_to_send=rand.choice(list(open("facts.txt")))
+                                  self.send_message(recv,msg_to_send)    
+                              
                             
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
