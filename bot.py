@@ -173,6 +173,7 @@ class bot():
                     messagetosend=rand.choice(list(open("facts.txt")))
                     print(whotosend)
                     self.send_message(whotosend,messagetosend)
+                    
                      #else try sending message if failed print error and close socket     
                  
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
@@ -189,15 +190,16 @@ class bot():
                             self.send_message(channel, f"You rolled a {diceroll}")
                         elif message.startswith("!slap"):
                             randuser=rand.choice(self.user_list)
-                            if randuser==self.name:
-                                self.send_message(channel, f"Can't slap myself")
+                            
+                            while randuser==self.name:
+                                randuser=rand.choice(self.user_list)
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                
                                
                                   
                     else:   
-                            bot_replies.random_replies()
+                        bot_replies.random_replies()
                             
             except s.error as e:
                 print("Error: "+str(e)+"unable to receive message")
