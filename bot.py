@@ -117,6 +117,9 @@ class bot():
             #try receiving messages from server if failed print error and close socket
             try:
                 data=self.sock.recv(1024).decode("UTF-8")
+                if not data:
+                    print("Server OUT")
+                    break
                 #receives ping from the server and sends pong back to keep connection alive
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
@@ -169,7 +172,7 @@ class bot():
                     whotosend=self.get_user(data)    
                     messagetosend=rand.choice(list(open("facts.txt")))
                     print(whotosend)
-                    self.sock.send(bytes("PRIVMSG "+whotosend+" :"+messagetosend+"\r\n", "UTF-8"))
+                    self.send_message(whotosend,messagetosend)
                      #else try sending message if failed print error and close socket     
                  
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
@@ -191,8 +194,7 @@ class bot():
                             else:     
                               self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                
-                        else:
-                            self.send_message(channel, "Command not recognised")          
+                               
                                   
                     else:   
                             bot_replies.random_replies()
