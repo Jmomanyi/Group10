@@ -116,7 +116,7 @@ class bot():
                 if data.find("PING")!=-1:
                     self.sock.send(bytes("PONG "+data.split()[1]+"\r\n", "UTF-8"))
                     
-                    #
+                    #print user list
                     print("*"*20)
                     print("USERLIST")
                     bot.get_user_list()  
@@ -161,7 +161,7 @@ class bot():
                 #roll a dice
                 #slap a user
                 if data.find("PRIVMSG")!=-1:
-                    if self.name in data:
+                    if (self.name in data)!=-1:
                         print("I was mentioned")
                         bot_replies.privatemsg(data)
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
