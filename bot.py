@@ -206,10 +206,11 @@ class bot():
                     print(whotosend)
                     #sends message to user
                     self.send_message(whotosend,messagetosend)
+                    
+                    
                     #split data to get the message sent and print it
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
                     print(message)
-
 
                     #if message starts with !
                     if message.startswith("!"):
@@ -239,15 +240,17 @@ class bot():
                                 #get another random user
                                 randuser=rand.choice(self.user_list)
                             #else
-                            else:     
+                        else:     
                                 #slap a random user with a trout
                                 self.send_message(channel,"slaps"+" "+randuser+" "+"with a large trout. \n")
                                
                                
                                   
-                        else:   
+                    else:   
                             #reply random replies
                             bot_replies.random_replies()
+                            
+                            
             #if failed, print error and exit.            
             except s.error as e:
                 print("Error: "+str(e)+"Unable to receive message.")
