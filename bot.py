@@ -198,7 +198,7 @@ class bot():
                 #provide help
                 #roll a dice
                 #slap a user
-                if data.find("PRIVMSG")!=-1:
+                if data.find("PRIVMSG"+self.name)!=-1:
                     #gets name of user to send message to
                     whotosend=self.get_user(data)  
                     #gets the message to send  
