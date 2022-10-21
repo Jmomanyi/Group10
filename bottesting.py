@@ -195,17 +195,17 @@ class bot():
                 #provide help
                 #roll a dice
                 #slap a user
-                if data.find("PRIVMSG")!=-1:
-                    #gets name of user to send message to
-                    whotosend=self.get_user(data)  
-                    #gets the message to send  
-                    messagetosend=rand.choice(list(open("facts.txt")))
-                    print(whotosend)
-                    #sends message to user
-                    self.send_message(whotosend,messagetosend)
-                    #split data to get the message sent and print it
-                    message=data.split("PRIVMSG",1)[1].split(":",1)[1]
-                    print(message)
+                    if data.find("PRIVMSG")!=-1:
+                        #gets name of user to send message to
+                        whotosend=self.get_user(data)  
+                        #gets the message to send  
+                        messagetosend=rand.choice(list(open("facts.txt")))
+                        print(whotosend)
+                        #sends message to user
+                        self.send_message(whotosend,messagetosend)
+                        #split data to get the message sent and print it
+                        message=data.split("PRIVMSG",1)[1].split(":",1)[1]
+                        print(message)
 
 
                     #if message starts with !
