@@ -193,20 +193,12 @@ class bot():
                 
                 
                         
-                #respond to messages in channel
-                #respond hello
-                #provide help
-                #roll a dice
-                #slap a user
-                if data.find("PRIVMSG"+self.name)!=-1:
-                    #gets name of user to send message to
-                    whotosend=self.get_user(data)  
-                    #gets the message to send  
-                    messagetosend=rand.choice(list(open("facts.txt")))
-                    print(whotosend)
-                    #sends message to user
-                    self.send_message(whotosend,messagetosend)
-                    
+                     #respond to messages in channel
+                    #respond hello
+                    #provide help
+                    #roll a dice
+                    #slap a user
+                
                     
                     #split data to get the message sent and print it
                     message=data.split("PRIVMSG",1)[1].split(":",1)[1]
@@ -250,6 +242,15 @@ class bot():
                             #reply random replies
                             bot_replies.random_replies()
                             
+                if data.find("PRIVMSG")!=-1:
+                    #gets name of user to send message to
+                    whotosend=self.get_user(data)  
+                    #gets the message to send  
+                    messagetosend=rand.choice(list(open("facts.txt")))
+                    print(whotosend)
+                    #sends message to user
+                    self.send_message(whotosend,messagetosend)
+                                    
                             
             #if failed, print error and exit.            
             except s.error as e:
