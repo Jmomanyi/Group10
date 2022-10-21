@@ -123,7 +123,10 @@ class bot():
             self.user_list.remove(user)
             return self.user_list
 
-
+    def get_content(self,data):
+        msg=data.split('\n\r')
+        mess=msg[1].split(":")
+        
     #gets the user_list and prints it
     def get_user_list(self):
         for user in self.user_list:
@@ -201,7 +204,7 @@ class bot():
                 
                     
                     #split data to get the message sent and print it
-                    message=data.split("PRIVMSG",1)[1].split(":",1)[1]
+                    message=bot.get_content(data)
                     print(message)
 
                     #if message starts with !
