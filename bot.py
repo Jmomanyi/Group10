@@ -125,7 +125,7 @@ class bot():
 
     def get_content(self,data):
         msg=data.split('\n\r')
-        mess=msg[1].split(":")
+        mess=msg[2].split(":")
         
     #gets the user_list and prints it
     def get_user_list(self):
